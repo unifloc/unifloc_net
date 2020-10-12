@@ -8,3 +8,9 @@ D:\unifloc\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.
 D:\unifloc\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.pdb
 D:\unifloc\unifloc_net\UnfClassLibrary\bin\Debug\netstandard2.0\alglibnet2.dll
 D:\unifloc\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbproj.CopyComplete
+D:\Git\Git Данила\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbprojAssemblyReference.cache
+D:\Git\Git Данила\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.AssemblyInfoInputs.cache
+D:\Git\Git Данила\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.AssemblyInfo.vb
+D:\Git\Git Данила\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbproj.CoreCompileInputs.cache
+D:\Git\Git Данила\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.dll
+D:\Git\Git Данила\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.pdb

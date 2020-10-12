@@ -180,19 +180,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Rinat Habibullin\\.nuget\\packages\\": {}
+    "C:\\Users\\isaev\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\unifloc\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
+      "projectUniqueName": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
       "projectName": "UnfClassLibrary",
-      "projectPath": "D:\\unifloc\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
-      "packagesPath": "C:\\Users\\Rinat Habibullin\\.nuget\\packages\\",
-      "outputPath": "D:\\unifloc\\unifloc_net\\UnfClassLibrary\\obj\\",
+      "projectPath": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
+      "packagesPath": "C:\\Users\\isaev\\.nuget\\packages\\",
+      "outputPath": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Rinat Habibullin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\isaev\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -233,7 +233,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
   }

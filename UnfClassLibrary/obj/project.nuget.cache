@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "P6Qidb90vx5tCh/qE/Hz+XqY4OZVz0wtl7eGc8De+wLvT330aplxUGOwKArVp+mg7OCTHmCkjrTXwtRkUkX7Gw==",
+  "dgSpecHash": "icG9WoMeLTiAYltNi80APrgKvu+rzKUMWQnc97bY4rfH2jRuE4lxllemdOh3UYjsPQSGQaXNifUfdYxu3PeBkQ==",
   "success": true,
-  "projectFilePath": "D:\\unifloc\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
+  "projectFilePath": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Rinat Habibullin\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\Rinat Habibullin\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Users\\isaev\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\isaev\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
   ],
   "logs": []
 }

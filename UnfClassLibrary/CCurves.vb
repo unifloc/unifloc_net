@@ -35,16 +35,16 @@ Public Class CCurves
     End Property
 
     Public Sub ClearPoints()
-        Dim crv
+        Dim crv As CCurves
         For Each crv In curves.Values
             Call crv.ClearPoints
         Next crv
     End Sub
 
-    Public Sub ClearPoints_unprotected()
-        Dim crv
-        For Each crv In curves.Values
-            If Not crv.special Then Call crv.ClearPoints
-        Next crv
-    End Sub
+    'Public Sub ClearPoints_unprotected()
+    'Dim crv As CCurves
+    'For Each crv In curves.Values
+    'If Not crv.special Then Call crv.ClearPoints
+    'Next crv
+    'End Sub
 End Class

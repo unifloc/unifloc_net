@@ -12,3 +12,19 @@ D:\unifloc\unifloc_net\u7_excel\bin\Debug\UnfClassLibrary.dll
 D:\unifloc\unifloc_net\u7_excel\bin\Debug\alglibnet2.dll
 D:\unifloc\unifloc_net\u7_excel\bin\Debug\UnfClassLibrary.pdb
 D:\unifloc\unifloc_net\u7_excel\obj\Debug\u7_excel.vbproj.CopyComplete
+D:\Git\Git Данила\unifloc_net\u7_excel\bin\Debug\u7_excel.dll
+D:\Git\Git Данила\unifloc_net\u7_excel\bin\Debug\u7_excel.pdb
+D:\Git\Git Данила\unifloc_net\u7_excel\bin\Debug\u7_excel.xml
+D:\Git\Git Данила\unifloc_net\u7_excel\bin\Debug\Newtonsoft.Json.dll
+D:\Git\Git Данила\unifloc_net\u7_excel\bin\Debug\UnfClassLibrary.dll
+D:\Git\Git Данила\unifloc_net\u7_excel\bin\Debug\alglibnet2.dll
+D:\Git\Git Данила\unifloc_net\u7_excel\bin\Debug\UnfClassLibrary.pdb
+D:\Git\Git Данила\unifloc_net\u7_excel\bin\Debug\Newtonsoft.Json.xml
+D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.vbprojAssemblyReference.cache
+D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.Resources.resources
+D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.vbproj.GenerateResource.cache
+D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.vbproj.CoreCompileInputs.cache
+D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.vbproj.CopyComplete
+D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.dll
+D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.xml
+D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.pdb

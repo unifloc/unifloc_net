@@ -12,6 +12,8 @@
         Console.WriteLine("fluid Pb" + CStr(fluid.Pb_calc_atma))
         Console.ReadKey(True)
 
+        Dim new_pvt_str As UnfClassLibrary.CPVT
+
     End Sub
 
 End Module

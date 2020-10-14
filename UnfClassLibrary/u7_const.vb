@@ -7,7 +7,7 @@
 ' constant definition module
 
 
-Module u7_const
+Public Module u7_const
 
     Public Const vbObjectError = 1000   ' added for compatibility with VBA
 

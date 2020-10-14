@@ -23,8 +23,8 @@ Public Module u7PVT
     'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
     ' функция расчета объемного коэффициента газа
     Public Function PVT_bg_m3m3(
-                ByVal p_atma As Double,
-                ByVal t_C As Double,
+                ByVal p_atma As Integer,
+                ByVal t_C As Integer,
                 Optional ByVal gamma_gas As Double = 0.7,
                 Optional ByVal gamma_oil As Double = 0.86,
                 Optional ByVal gamma_wat As Double = 1.02,

@@ -13,3 +13,20 @@ D:\unifloc\unifloc_net\ConsoleApp_PVT_test\bin\Debug\UnfClassLibrary.dll
 D:\unifloc\unifloc_net\ConsoleApp_PVT_test\bin\Debug\UnfClassLibrary.pdb
 D:\unifloc\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.vbproj.CopyComplete
 D:\unifloc\unifloc_net\ConsoleApp_PVT_test\bin\Debug\alglibnet2.dll
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\ConsoleApp_PVT_test.exe.config
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\ConsoleApp_PVT_test.exe
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\ConsoleApp_PVT_test.pdb
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\ConsoleApp_PVT_test.xml
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\UnfClassLibrary.dll
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\alglibnet2.dll
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\UnfClassLibrary.pdb
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.vbprojAssemblyReference.cache
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.Resources.resources
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.vbproj.GenerateResource.cache
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.vbproj.CoreCompileInputs.cache
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.vbproj.CopyComplete
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.exe
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.xml
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.pdb
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\Newtonsoft.Json.dll
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\Newtonsoft.Json.xml

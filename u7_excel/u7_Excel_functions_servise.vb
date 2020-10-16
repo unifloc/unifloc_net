@@ -89,6 +89,6 @@ Public Module u7_Excel_function_servise
 
         Dim new_json_ = JsonConvert.SerializeObject(pvt_dict)
         PVT_encode_string = new_json_
-        Debug.Print(PVT_encode_string)
+        'Debug.Print(PVT_encode_string)
     End Function
 End Module

@@ -69,7 +69,7 @@ Public Module u7_Excel_function_servise
         Dim frmt As String
         Dim frmt_int As String
 
-        Dim pvt_dict As New Dictionary(Of String, Object)
+        Dim pvt_dict As New Dictionary(Of String, Double)
 
         pvt_dict.Add("gamma_gas", gamma_gas)
         pvt_dict.Add("gamma_oil", gamma_oil)
@@ -91,4 +91,35 @@ Public Module u7_Excel_function_servise
         PVT_encode_string = new_json_
         'Debug.Print(PVT_encode_string)
     End Function
+
+    Public Function PVT_decode_string(
+                    Optional ByVal str_PVT As String = UnfClassLibrary.u7_const.PVT_DEFAULT,
+                    Optional ByVal getStr As Boolean = False)
+        Dim PVT As New UnfClassLibrary.CPVT
+        Try
+            If Len(str_PVT) < 3 Then
+                PVT_decode_string = Nothing
+                Exit Function
+            End If
+
+            Call PVT.init_json(str_PVT)
+            If getStr Then
+                With PVT
+                    PVT_decode_string = PVT_encode_string(.gamma_g, .gamma_o,
+                                                            .gamma_w, .Rsb_m3m3, .Rsb_m3m3,
+                                                            .pb_atma, .tres_C, .bob_m3m3, .muob_cP, 0, .ksep_fr, .p_ksep_atma,
+                                                            .t_ksep_C, PVT.gas_only)
+                End With
+            Else
+                PVT_decode_string = PVT
+            End If
+            Exit Function
+        Catch ex As Exception
+            Dim errmsg As String
+            errmsg = "Error:PVT_decode_string"
+            Throw New ApplicationException(errmsg)
+        End Try
+    End Function
+
+
 End Module

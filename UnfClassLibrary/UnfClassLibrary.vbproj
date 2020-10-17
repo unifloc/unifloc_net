@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="alglibnet2">
       <HintPath>..\alglib-3.16.0.csharp.gpl\csharp\net-core\alglibnet2.dll</HintPath>
     </Reference>

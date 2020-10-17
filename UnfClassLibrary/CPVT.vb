@@ -24,11 +24,15 @@
 ' Ключевая функция calc_PVT. Ее вызов гарантирует пересчет всех параметров потока, к которым можно получить доступ
 ' через соответствующие свойства.
 'description_end_rus
-
+Option Explicit On
+Imports Newtonsoft.Json
 
 
 Public Class CPVT
     Public gas_only As Boolean
+    Public ksep_fr As Double
+    Public p_ksep_atma As Double
+    Public t_ksep_C As Double
     Private _zCorr As Z_CORRELATION
     Private _pVT_correlation As PVT_correlation       ' PVT correlation
     Public gamma_o As Double                        ' плотность нефти удельная
@@ -201,7 +205,7 @@ Public Class CPVT
 
         t_K = PT_calc_.t_C + const_t_K_min
         p_MPa = PT_calc_.p_atma * const_convert_atma_MPa
-        Compressibility_oil_1atm = unf_pvt_compressibility_oil_VB_1atm(rs_m3m3_, gamma_g, t_K, gamma_o, p_MPa)
+        Compressibility_oil_1atm = Unf_pvt_compressibility_oil_VB_1atm(rs_m3m3_, gamma_g, t_K, gamma_o, p_MPa)
 
     End Function
 
@@ -211,7 +215,7 @@ Public Class CPVT
 
         t_K = PT_calc_.t_C + const_t_K_min
         p_MPa = PT_calc_.p_atma * const_convert_atma_MPa
-        Compressibility_wat_1atm = unf_pvt_compressibility_wat_1atma(p_MPa, t_K, salinity_ppm_)
+        Compressibility_wat_1atm = Unf_pvt_compressibility_wat_1atma(p_MPa, t_K, salinity_ppm_)
         ' need to check - water compressibility strongly correlate with Bw - water formation volume factor
         ' but here two different correlations are used
         ' in hope that for water everything should be ok
@@ -223,7 +227,7 @@ Public Class CPVT
 
         t_K = PT_calc_.t_C + const_t_K_min
         p_MPa = PT_calc_.p_atma * const_convert_atma_MPa
-        Compressibility_gas_1atm = 1 / p_MPa - 1 / z_ * unf_pvt_dZdp(t_K, p_MPa, gamma_g, Z_CORRELATION.z_Kareem)
+        Compressibility_gas_1atm = 1 / p_MPa - 1 / z_ * Unf_pvt_dZdp(t_K, p_MPa, gamma_g, Z_CORRELATION.z_Kareem)
         Compressibility_gas_1atm *= const_convert_atma_MPa
     End Function
 
@@ -286,8 +290,8 @@ Public Class CPVT
         Dim dZdT As Double
         Dim TZdZdT As Double
         wm = (Mo_kgsec() + Mw_kgsec() + Mg_kgsec())
-        dZdT = unf_pvt_dZdt(t_calc_K, P_calc_MPaa, gamma_g, Z_CORRELATION.z_Kareem, z_)
-        TZdZdT = t_calc_K() / z_ * dZdT
+        dZdT = Unf_pvt_dZdt(T_calc_K, P_calc_MPaa, gamma_g, Z_CORRELATION.z_Kareem, z_)
+        TZdZdT = T_calc_K() / z_ * dZdT
         If wm > 0 Then
             x = Mg_kgsec() / (Mo_kgsec() + Mw_kgsec() + Mg_kgsec())    ' массовая доля газа в потоке
         Else
@@ -651,6 +655,9 @@ Public Class CPVT
         heat_capacity_ratio_oil_ = 1.05
         heat_capacity_ratio_water_ = 1
 
+        ksep_fr = 0
+        p_ksep_atma = 0
+        t_ksep_C = 0
     End Sub
 
 
@@ -1161,6 +1168,81 @@ Public Class CPVT
             Throw New ApplicationException(errmsg)
         End Try
 
+    End Sub
+
+    Public Sub init_json(json As String)
+        Dim d
+        d = JsonConvert.DeserializeObject(json)
+        Call init_dictionary(d)
+    End Sub
+
+    Public Sub init_dictionary(dict As Dictionary(Of Object, Object))
+        Dim gamma_gas As Double
+        Dim gamma_oil As Double
+        Dim gamma_wat As Double
+        Dim rsb_m3m3 As Double
+        Dim rp_m3m3 As Double
+        Dim pb_atma As Double
+        Dim tres_C As Double
+        Dim bob_m3m3 As Double
+        Dim muob_cP As Double
+        Dim PVTcorr As Integer
+        Dim ksep_fr As Double
+        Dim p_ksep_atma As Double
+        Dim t_ksep_C As Double
+        Dim gas_only As Boolean
+
+        Dim errmsg As String
+        Dim key As String
+
+        Try
+            With dict
+                key = "gamma_oil"
+                If .ContainsKey(key) Then
+                    gamma_oil = .Item(key)
+                Else
+                    errmsg = "CPVT.init_dictionary. error: " & key & " must be given"
+                End If
+
+                key = "gamma_gas"
+                If .ContainsKey(key) Then
+                    gamma_gas = .Item(key)
+                Else
+                    errmsg = "CPVT.init_dictionary. error: " & key & " must be given"
+                End If
+
+                key = "rsb_m3m3"
+                If .ContainsKey(key) Then
+                    rsb_m3m3 = .Item(key)
+                Else
+                    errmsg = "CPVT.init_dictionary. error: " & key & " must be given"
+                End If
+
+                If .ContainsKey("gamma_wat") Then gamma_wat = .Item("gamma_wat")
+                If .ContainsKey("rp_m3m3") Then rp_m3m3 = .Item("rp_m3m3")
+                If .ContainsKey("pb_atma") Then pb_atma = .Item("pb_atma")
+                If .ContainsKey("t_res_C") Then tres_C = .Item("t_res_C")
+                If .ContainsKey("bob_m3m3") Then bob_m3m3 = .Item("bob_m3m3")
+                If .ContainsKey("muob_cP") Then muob_cP = .Item("muob_cP")
+                If .ContainsKey("PVTcorr") Then PVTcorr = .Item("PVTcorr")
+                If .ContainsKey("ksep_fr") Then ksep_fr = .Item("ksep_fr")
+                If .ContainsKey("p_ksep_atma") Then p_ksep_atma = .Item("p_ksep_atma")
+                If .ContainsKey("t_ksep_C") Then t_ksep_C = .Item("t_ksep_C")
+                If .ContainsKey("gas_only") Then gas_only = .Item("gas_only")
+            End With
+
+            Call Init(gamma_gas, gamma_oil, gamma_wat, rsb_m3m3, pb_atma, bob_m3m3, PVTcorr, tres_C, rp_m3m3, muob_cP)
+            Me.gas_only = gas_only
+            Me.ksep_fr = ksep_fr
+            Me.t_ksep_C = t_ksep_C
+            If ksep_fr > 0 And ksep_fr <= 1 And p_ksep_atma > 0 And t_ksep_C > 0 Then
+                Call Mod_after_separation(p_ksep_atma, t_ksep_C, ksep_fr, True)
+            End If
+            Exit Sub
+        Catch ex As Exception
+            AddLogMsg(errmsg)
+            Throw New ApplicationException(errmsg)
+        End Try
     End Sub
 
 End Class

@@ -30,3 +30,6 @@ D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT
 D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.pdb
 D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\Newtonsoft.Json.dll
 D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\Newtonsoft.Json.xml
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\u7_excel.dll
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\u7_excel.pdb
+D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\u7_excel.xml

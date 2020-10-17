@@ -111,6 +111,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\u7_excel\u7_excel.vbproj">
+      <Project>{fdffcde4-0124-4356-ae09-2affa5b7d547}</Project>
+      <Name>u7_excel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UnfClassLibrary\UnfClassLibrary.vbproj">
       <Project>{a87ac552-d0be-41f4-9f92-4537436bedcd}</Project>
       <Name>UnfClassLibrary</Name>

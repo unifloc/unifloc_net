@@ -9,7 +9,7 @@
 
 
 
-Module u7_types
+Public Module u7_types
 
     ' hydraulic correlations types
     Public Enum H_CORRELATION As Integer

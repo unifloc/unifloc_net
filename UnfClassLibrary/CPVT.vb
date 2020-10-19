@@ -26,6 +26,7 @@
 'description_end_rus
 Option Explicit On
 Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
 
 
 Public Class CPVT
@@ -1171,12 +1172,11 @@ Public Class CPVT
     End Sub
 
     Public Sub init_json(json As String)
-        Dim d
-        d = JsonConvert.DeserializeObject(json)
+        Dim d = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(json)
         Call init_dictionary(d)
     End Sub
 
-    Public Sub init_dictionary(dict As Dictionary(Of Object, Object))
+    Public Sub init_dictionary(dict As Dictionary(Of String, Object))
         Dim gamma_gas As Double
         Dim gamma_oil As Double
         Dim gamma_wat As Double

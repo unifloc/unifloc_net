@@ -23,7 +23,7 @@ Public Module u7_Excel_function_servise
                     Optional ByVal bob_m3m3 As Double = -1,
                     Optional ByVal muob_cP As Double = -1,
                     Optional ByVal PVTcorr As Integer = 0,
-                    Optional ByVal ksep_fr As Double = 0,
+                    Optional ByVal ksep_fr As Double = -1,
                     Optional ByVal p_ksep_atma As Double = -1,
                     Optional ByVal t_ksep_C As Double = -1,
                     Optional ByVal gas_only As Boolean = False
@@ -76,15 +76,15 @@ Public Module u7_Excel_function_servise
         pvt_dict.Add("gamma_wat", gamma_wat)
         pvt_dict.Add("rsb_m3m3", rsb_m3m3)
 
-        If rp_m3m3 = -1 Then pvt_dict.Add("rp_m3m3", rp_m3m3)
-        If pb_atma = -1 Then pvt_dict.Add("pb_atma", pb_atma)
-        If t_res_C = 90 Then pvt_dict.Add("t_res_C", t_res_C)
-        If bob_m3m3 = -1 Then pvt_dict.Add("bob_m3m3", bob_m3m3)
-        If muob_cP = -1 Then pvt_dict.Add("muob_cP", muob_cP)
-        If PVTcorr = 0 Then pvt_dict.Add("PVTcorr", PVTcorr)
-        If ksep_fr = 0 Then pvt_dict.Add("ksep_fr", ksep_fr)
-        If p_ksep_atma = -1 Then pvt_dict.Add("p_ksep_atma", p_ksep_atma)
-        If t_ksep_C = -1 Then pvt_dict.Add("t_ksep_C", t_ksep_C)
+        If rp_m3m3 Then pvt_dict.Add("rp_m3m3", rp_m3m3)
+        If pb_atma Then pvt_dict.Add("pb_atma", pb_atma)
+        If t_res_C Then pvt_dict.Add("t_res_C", t_res_C)
+        If bob_m3m3 Then pvt_dict.Add("bob_m3m3", bob_m3m3)
+        If muob_cP Then pvt_dict.Add("muob_cP", muob_cP)
+        If PVTcorr Then pvt_dict.Add("PVTcorr", PVTcorr)
+        If ksep_fr Then pvt_dict.Add("ksep_fr", ksep_fr)
+        If p_ksep_atma Then pvt_dict.Add("p_ksep_atma", p_ksep_atma)
+        If t_ksep_C Then pvt_dict.Add("t_ksep_C", t_ksep_C)
         If gas_only Then pvt_dict.Add("gas_only", gas_only)
 
         Dim new_json_ = JsonConvert.SerializeObject(pvt_dict)

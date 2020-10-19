@@ -152,20 +152,20 @@ Public Class CChoke
         'p_d - Downstream pressure ( (atma))
         'T_u - Upstream temperature ( (C))
 
-        Dim p_co As Double
-        Dim min_p_d As Double
-        Dim counter As Double
-        Dim w_i As Double
-        Dim wi_der1 As Double
-        Dim d_pr As Double
+        Dim p_co As Double = 0
+        Dim min_p_d As Double = 0
+        Dim counter As Double = 0
+        Dim w_i As Double = 0
+        Dim wi_der1 As Double = 0
+        Dim d_pr As Double = 0
         Const max_iters As Integer = 10
-        Dim eps As Double
-        Dim p_ri As Double
+        Dim eps As Double = 0
+        Dim p_ri As Double = 0
         '   Dim v_si As Double
-        Dim p_dcr As Double
-        Dim p_c As Double
-        Dim p_ra As Double
-        Dim w As Double
+        Dim p_dcr As Double = 0
+        Dim p_c As Double = 0
+        Dim p_ra As Double = 0
+        Dim w As Double = 0
         Const p_r_inc As Double = 0.001
 
         Try

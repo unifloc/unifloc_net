@@ -36,5 +36,4 @@ Module Module1
         Console.WriteLine("test: " + test)
         Console.ReadKey(True)
     End Sub
-
 End Module

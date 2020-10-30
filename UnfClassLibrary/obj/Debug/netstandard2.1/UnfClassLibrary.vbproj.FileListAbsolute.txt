@@ -1,0 +1,4 @@
+D:\unifloc\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.1\UnfClassLibrary.vbprojAssemblyReference.cache
+D:\unifloc\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.1\UnfClassLibrary.vbproj.CoreCompileInputs.cache
+D:\unifloc\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.1\UnfClassLibrary.AssemblyInfoInputs.cache
+D:\unifloc\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.1\UnfClassLibrary.AssemblyInfo.vb

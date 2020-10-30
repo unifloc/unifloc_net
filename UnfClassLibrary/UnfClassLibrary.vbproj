@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>UnfClassLibrary</RootNamespace>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="u7_Excel_functions_PVT.vb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="alglibnet2">
+      <HintPath>..\alglib-3.16.0.csharp.gpl\csharp\net-core\alglibnet2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

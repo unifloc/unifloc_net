@@ -23,9 +23,11 @@ Module Module1
 
         'Dim test_pvt
         'test_pvt = u7_excel.u7_Excel_function_servise.PVT_decode_string(pvt_str)
-        Dim pvt_str
+        Dim pvt_str, bg, bg_str
         pvt_str = u7_excel.PVT_encode_string(gamma_gas:=0.8, gamma_oil:=0.86, gamma_wat:=1.1, rsb_m3m3:=80, rp_m3m3:=80, pb_atma:=125, t_res_C:=100, bob_m3m3:=1.2, muob_cP:=1)
-        'Console.WriteLine(pvt_str)
+        bg = u7_excel.PVT_bg_m3m3(p_atma:=260, t_C:=80, gamma_gas:=0.8, gamma_oil:=0.86, gamma_wat:=1.1, rsb_m3m3:=80, rp_m3m3:=80, pb_atma:=125, bob_m3m3:=1.2, muob_cP:=1, tres_C:=100)
+        bg_str = JsonConvert.SerializeObject(bg)
+        Console.WriteLine(bg_str)
 
         Dim test_choke
         Dim test As String

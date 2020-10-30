@@ -47,10 +47,11 @@ Public Module u7_Excel_functions_MF
                 out_desc = "c_calibr_fr"
             End If
 
-            Dim new_array(1) As Object
-            new_array(0) = (out, p_in_atma, p_out_atma, t_choke_C, Choke.c_calibr_fr)
-            new_array(1) = (out_desc, "p_intake_atma", "p_out_atma", "t_choke_C", "c_calibr_fr")
-            MF_calibr_choke_fast = new_array.GetValue(0)
+            'Dim new_array(1) As Object
+            'new_array(0) = (out, p_in_atma, p_out_atma, t_choke_C, Choke.c_calibr_fr)
+            'new_array(1) = (out_desc, "p_intake_atma", "p_out_atma", "t_choke_C", "c_calibr_fr")
+            'MF_calibr_choke_fast = new_array
+            MF_calibr_choke_fast = {out, p_in_atma, p_out_atma, t_choke_C, Choke.c_calibr_fr}
             'MF_calibr_choke_fast = Join(MF_calibr_choke_fast)
             Exit Function
 

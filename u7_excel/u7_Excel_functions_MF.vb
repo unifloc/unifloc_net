@@ -20,7 +20,8 @@ Public Module u7_Excel_functions_MF
                                         Optional ByVal str_PVT As String = UnfClassLibrary.u7_const.PVT_DEFAULT,
                                         Optional ByVal q_gas_sm3day As Double = 0)
         Try
-            Dim Choke As New UnfClassLibrary.CChoke
+            Dim Choke As UnfClassLibrary.CChoke
+            Choke = New UnfClassLibrary.CChoke
             Dim pt As UnfClassLibrary.u7_types.PTtype
             Dim PVT As UnfClassLibrary.CPVT
             Dim out, out_desc
@@ -33,8 +34,9 @@ Public Module u7_Excel_functions_MF
 
             PVT.q_gas_free_sm3day = q_gas_sm3day
             Choke.fluid = PVT
+            Choke.Class_Initialize()
             Choke.fluid.qliq_sm3day = qliq_sm3day
-            Choke.fluid.Fw_fr = fw_perc
+            Choke.fluid.Fw_fr = fw_perc / 100
             Choke.d_down_m = d_pipe_mm / 1000
             Choke.d_up_m = d_pipe_mm / 1000
             Choke.d_choke_m = d_choke_mm / 1000
@@ -48,8 +50,8 @@ Public Module u7_Excel_functions_MF
             Dim new_array(1) As Object
             new_array(0) = (out, p_in_atma, p_out_atma, t_choke_C, Choke.c_calibr_fr)
             new_array(1) = (out_desc, "p_intake_atma", "p_out_atma", "t_choke_C", "c_calibr_fr")
-            MF_calibr_choke_fast = new_array
-            MF_calibr_choke_fast = Join(MF_calibr_choke_fast)
+            MF_calibr_choke_fast = new_array.GetValue(0)
+            'MF_calibr_choke_fast = Join(MF_calibr_choke_fast)
             Exit Function
 
         Catch ex As Exception

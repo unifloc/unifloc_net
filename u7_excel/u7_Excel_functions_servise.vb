@@ -97,6 +97,7 @@ Public Module u7_Excel_function_servise
                     Optional ByVal getStr As Boolean = False)
         Dim PVT As New UnfClassLibrary.CPVT
         Try
+            PVT.Class_Initialize()
             If Len(str_PVT) < 3 Then
                 PVT_decode_string = Nothing
                 Exit Function

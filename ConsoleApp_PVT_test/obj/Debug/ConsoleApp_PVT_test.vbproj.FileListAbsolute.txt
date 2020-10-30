@@ -33,3 +33,23 @@ D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\Newtonsoft.Jso
 D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\u7_excel.dll
 D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\u7_excel.pdb
 D:\Git\Git Данила\unifloc_net\ConsoleApp_PVT_test\bin\Debug\u7_excel.xml
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\ConsoleApp_PVT_test.exe.config
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\ConsoleApp_PVT_test.exe
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\ConsoleApp_PVT_test.pdb
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\ConsoleApp_PVT_test.xml
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\u7_excel.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\UnfClassLibrary.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\alglibnet2.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\u7_excel.pdb
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\u7_excel.xml
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\UnfClassLibrary.pdb
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.vbprojAssemblyReference.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.Resources.resources
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.vbproj.GenerateResource.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.vbproj.CoreCompileInputs.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.vbproj.CopyComplete
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.exe
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.xml
+C:\Users\Sevrn\Desktop\C#\unifloc_net\ConsoleApp_PVT_test\obj\Debug\ConsoleApp_PVT_test.pdb

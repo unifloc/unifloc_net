@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "xxVxt7cJByvsj8RpykFFtlBrmINYfKGS3qEEdHxI7StOhDQb76kMxwgwsP1g27zI18uKClm7SSEdM9Lx10P7nQ==",
+  "dgSpecHash": "bhluxhcNcwzq8ayURzZSbKyjtUFuQ+lWZuy+5JjPdoX55Eigr1m/WNepyvWkOyZgQhw8d5zIUO3ZOwZ4LnKUpw==",
   "success": true,
-  "projectFilePath": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
+  "projectFilePath": "C:\\Users\\Sevrn\\Desktop\\C#\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
   "expectedPackageFiles": [
-    "C:\\Users\\isaev\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\isaev\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
-    "C:\\Users\\isaev\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+    "C:\\Users\\Sevrn\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Sevrn\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\Sevrn\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
   ],
   "logs": []
 }

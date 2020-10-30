@@ -221,19 +221,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\isaev\\.nuget\\packages\\": {}
+    "C:\\Users\\Sevrn\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
+      "projectUniqueName": "C:\\Users\\Sevrn\\Desktop\\C#\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
       "projectName": "UnfClassLibrary",
-      "projectPath": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
-      "packagesPath": "C:\\Users\\isaev\\.nuget\\packages\\",
-      "outputPath": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\obj\\",
+      "projectPath": "C:\\Users\\Sevrn\\Desktop\\C#\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
+      "packagesPath": "C:\\Users\\Sevrn\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Sevrn\\Desktop\\C#\\unifloc_net\\UnfClassLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\isaev\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Sevrn\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

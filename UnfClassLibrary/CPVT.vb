@@ -630,35 +630,58 @@ Public Class CPVT
     ' функции и процедуры
     '===================================================================================
 
-    Private Sub Class_Initialize()
-        class_name_ = "CPVT"
-        PVT_correlation = PVT_correlation.Standing_based
-        gamma_o = 0.86
-        gamma_g = 0.6
-        gamma_w = 1
-        Rp_m3m3 = 100
-        Rsb_m3m3 = 100
-        pb_atma = -1  ' по умолчанию нет калибровок, только коррел€ци€
-        bob_m3m3 = -1  ' по умолчанию нет калибровок, только коррел€ци€
-        tres_C = 90
-        Fw_perc = 0
-        qliq_sm3day = 100
-        q_gas_free_sm3day = 0
+    Public Sub Class_Initialize(Optional ByVal class_name As String = "CPVT",
+                                Optional ByVal gamma_gas As Double = 0.6,
+                                Optional ByVal gamma_oil As Double = 0.86,
+                                Optional ByVal gamma_wat As Double = 1,
+                                Optional ByVal rsb_m3m3_ As Double = 100,
+                                Optional ByVal pb_atma_ As Double = -1,
+                                Optional ByVal bob_m3m3_ As Double = -1,
+                                Optional ByVal PVTcorr As Integer = PVT_correlation.Standing_based,
+                                Optional ByVal tres_C_ As Double = 90,
+                                Optional ByVal rp_m3m3_ As Double = 100,
+                                Optional ByVal Fw_perc_ As Double = 0,
+                                Optional ByVal qliq_sm3day_ As Double = 100,
+                                Optional ByVal q_gas_free_sm3day_ As Double = 0,
+                                Optional ByVal cw_JkgC As Double = 4176,
+                                Optional ByVal ZCorr_ As Integer = Z_CORRELATION.z_Kareem,
+                                Optional ByVal gas_only_ As Boolean = False,
+                                Optional ByVal pb_calc_atma As Double = 0,
+                                Optional ByVal heat_capacity_ratio_gas As Double = 1.3,
+                                Optional ByVal heat_capacity_ratio_oil As Double = 1.05,
+                                Optional ByVal heat_capacity_ratio_water As Double = 1,
+                                Optional ByVal ksep_fr_ As Double = 0,
+                                Optional ByVal p_ksep_atma_ As Double = 0,
+                                Optional ByVal t_ksep_C_ As Double = 0)
+
+        class_name_ = class_name
+        PVT_correlation = PVTcorr
+        gamma_o = gamma_oil
+        gamma_g = gamma_gas
+        gamma_w = gamma_wat
+        Rp_m3m3 = rp_m3m3_
+        Rsb_m3m3 = rsb_m3m3_
+        pb_atma = pb_atma_  ' по умолчанию нет калибровок, только коррел€ци€
+        bob_m3m3 = bob_m3m3_ ' по умолчанию нет калибровок, только коррел€ци€
+        tres_C = tres_C_
+        Fw_perc = Fw_perc_
+        qliq_sm3day = qliq_sm3day_
+        q_gas_free_sm3day = q_gas_free_sm3day_
         ' дл€ начала дл€ простоты инициализируем теплоемкость флюидов как константы
         ' потом можно будет добавить расчет в зависимости от условий
-        cw_JkgC_ = 4176
-        ZCorr = Z_CORRELATION.z_Kareem
-        gas_only = False
-        pb_calc_atma_ = 0
+        cw_JkgC_ = cw_JkgC
+        ZCorr = ZCorr_
+        gas_only = gas_only_
+        pb_calc_atma_ = pb_calc_atma
         ' heat capacity ratios estimated from perticular multiflash calcs
         ' good idea to improove adding correlations
-        heat_capacity_ratio_gas_ = 1.3
-        heat_capacity_ratio_oil_ = 1.05
-        heat_capacity_ratio_water_ = 1
+        heat_capacity_ratio_gas_ = heat_capacity_ratio_gas
+        heat_capacity_ratio_oil_ = heat_capacity_ratio_oil
+        heat_capacity_ratio_water_ = heat_capacity_ratio_water
 
-        ksep_fr = 0
-        p_ksep_atma = 0
-        t_ksep_C = 0
+        ksep_fr = ksep_fr_
+        p_ksep_atma = p_ksep_atma_
+        t_ksep_C = t_ksep_C_
     End Sub
 
 

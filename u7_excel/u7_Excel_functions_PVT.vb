@@ -1691,6 +1691,7 @@ Public Module u7PVT
             PVT = PVT_decode_string(str_PVT)
         Else
             PVT = New UnfClassLibrary.CPVT
+            PVT.Class_Initialize()
             PVT.Init(gamma_gas, gamma_oil, gamma_wat, rsb_m3m3, pb_atma, bob_m3m3, PVTcorr, tres_C, rp_m3m3, muob_cP)
             If ksep_fr > 0 And ksep_fr <= 1 And p_ksep_atma > 0 And t_ksep_C > 0 Then
                 Call PVT.Mod_after_separation(p_ksep_atma, t_ksep_C, ksep_fr, True)

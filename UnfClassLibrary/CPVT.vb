@@ -652,7 +652,38 @@ Public Class CPVT
                                 Optional ByVal heat_capacity_ratio_water As Double = 1,
                                 Optional ByVal ksep_fr_ As Double = 0,
                                 Optional ByVal p_ksep_atma_ As Double = 0,
-                                Optional ByVal t_ksep_C_ As Double = 0)
+                                Optional ByVal t_ksep_C_ As Double = 0,
+                                Optional ByVal muob_cP_ As Double = 0,
+                                Optional ByVal rsb_calc_m3m3 As Double = 0,
+                                Optional ByVal rs_m3m3 As Double = 0,
+                                Optional ByVal bo_m3m3 As Double = 0,
+                                Optional ByVal mu_oil_cP As Double = 0,
+                                Optional ByVal mu_deadoil_cP As Double = 0,
+                                Optional ByVal copmressibility_o_1atm As Double = 0,
+                                Optional ByVal ST_oilgas_dyncm As Double = 0,
+                                Optional ByVal ST_watgas_dyncm As Double = 0,
+                                Optional ByVal ST_liqgas_dyncm As Double = 0,
+                                Optional ByVal z As Double = 0,
+                                Optional ByVal bg_m3m3 As Double = 0,
+                                Optional ByVal mu_gas_cP As Double = 0,
+                                Optional ByVal bw_m3m3 As Double = 0,
+                                Optional ByVal bw_sc_m3m3 As Double = 0,
+                                Optional ByVal mu_wat_cP As Double = 0,
+                                Optional ByVal salinity_ppm As Double = 0,
+                                Optional ByVal q_oil_rc_m3day As Double = 0,
+                                Optional ByVal q_wat_rc_m3day As Double = 0,
+                                Optional ByVal q_gas_rc_m3day As Double = 0,
+                                Optional ByVal qliq_rc_m3day As Double = 0,
+                                Optional ByVal gas_fraction_d As Double = 0,
+                                Optional ByVal mu_mix_cP As Double = 0,
+                                Optional ByVal rho_oil_rc_kgm3 As Double = 0,
+                                Optional ByVal rho_wat_rc_kgm3 As Double = 0,
+                                Optional ByVal rho_liq_rc_kgm3 As Double = 0,
+                                Optional ByVal rho_mix_rc_kgm3 As Double = 0,
+                                Optional ByVal cv_gas_JkgC As Double = 0,
+                                Optional ByVal cp_oil_JkgC As Double = 0)
+
+        'Optional ByVal PT_calc_ As PTtype, без пон€ти€ как объ€вить и стоит ли
 
         class_name_ = class_name
         PVT_correlation = PVTcorr
@@ -682,6 +713,35 @@ Public Class CPVT
         ksep_fr = ksep_fr_
         p_ksep_atma = p_ksep_atma_
         t_ksep_C = t_ksep_C_
+        muob_cP = muob_cP_
+        rsb_calc_m3m3_ = rsb_calc_m3m3
+        rs_m3m3_ = rs_m3m3
+        bo_m3m3_ = bo_m3m3
+        mu_oil_cP_ = mu_oil_cP
+        mu_deadoil_cP_ = mu_deadoil_cP
+        copmressibility_o_1atm_ = copmressibility_o_1atm
+        ST_oilgas_dyncm_ = ST_oilgas_dyncm
+        ST_watgas_dyncm_ = ST_watgas_dyncm
+        ST_liqgas_dyncm_ = ST_liqgas_dyncm
+        z_ = z
+        bg_m3m3_ = bg_m3m3
+        mu_gas_cP_ = mu_gas_cP
+        bw_m3m3_ = bw_m3m3
+        bw_sc_m3m3_ = bw_sc_m3m3
+        mu_wat_cP_ = mu_wat_cP
+        salinity_ppm_ = salinity_ppm
+        q_oil_rc_m3day_ = q_oil_rc_m3day
+        q_wat_rc_m3day_ = q_wat_rc_m3day
+        q_gas_rc_m3day_ = q_gas_rc_m3day
+        qliq_rc_m3day_ = qliq_rc_m3day
+        gas_fraction_d_ = gas_fraction_d
+        mu_mix_cP_ = mu_mix_cP
+        rho_oil_rc_kgm3_ = rho_oil_rc_kgm3
+        rho_wat_rc_kgm3_ = rho_wat_rc_kgm3
+        rho_liq_rc_kgm3_ = rho_liq_rc_kgm3
+        rho_mix_rc_kgm3_ = rho_mix_rc_kgm3
+        cv_gas_JkgC_ = cv_gas_JkgC
+        cp_oil_JkgC_ = cp_oil_JkgC
     End Sub
 
 
@@ -698,7 +758,7 @@ Public Class CPVT
         gamma_g = gamma_gas
         gamma_o = gamma_oil
         gamma_w = gamma_wat
-        Me.Set_rp_rsb(rp_m3m3, rsb_m3m3)
+        Set_rp_rsb(rp_m3m3, rsb_m3m3)
         Me.pb_atma = pb_atma
         If tres_C > 0 Then Me.tres_C = tres_C
         Me.bob_m3m3 = bob_m3m3

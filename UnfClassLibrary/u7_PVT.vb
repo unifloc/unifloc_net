@@ -10,7 +10,7 @@
 ' converted 16/05/2020
 
 
-Public Module u7_PVT
+Module u7_PVT
 
     Function Unf_pvt_viscosity_dead_oil_Standing_cP(ByVal Temperature_K As Double,
                                                     ByVal gamma_oil As Double) As Double

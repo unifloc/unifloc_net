@@ -350,4 +350,181 @@ Public Class CChoke
                 Delta * (1 - (a_r * GAMMA / Delta) ^ 2) * (lambda * (1 - 1 / .Polytropic_exponent) * P_r ^ (-1 / .Polytropic_exponent) + alpha)
         End With
     End Function
+
+
+    'Function calculates downstream node pressure for choke
+    Public Function calc_choke_p_lin(PTbuf As PTtype) As PTtype
+        'PTbuf - well head pressure (upstream) ( (atma)) and temperature ( (C))
+        'Return downstream pressure and temperature
+
+        ' если расчет не возможен (решение не существует), возвращает 0, так как
+        ' потенциально может возникнуть ситуация, что при заданном дебите, диаметре штуцера и
+        ' получившемся давлении на входе - решения по давлению на выходе не будет существовать
+        'PTbuf - well head pressure and  temperature Upstream
+
+        Try
+            Dim eps As Double
+            Dim eps_q As Double
+            eps = 0.001
+            eps_q = 0.1
+            If (d_choke_m > d_up_m - 2 * eps) Or (d_choke_m < 0.001) Or (fluid.qliq_sm3day < eps_q) Then
+                calc_choke_p_lin = PTbuf
+                Exit Function
+            End If
+            ' Если при расчете линейного давления возникла ошибка, то скорее всего для дебита нет соотвествия для линейного давления
+            calc_choke_p_lin = calc_choke_p(PTbuf, calc_p_down:=1)
+            Exit Function
+        Catch ex As Exception
+            calc_choke_p_lin = Set_PT(0, 0)
+            Dim errmsg As String
+            errmsg = "Cchoke.calc_choke_plin_atma: error. set calc_choke_plin_atma = 0 : pbuf_atma  = " & PTbuf.p_atma & "  t_choke_C = " & PTbuf.t_C
+            AddLogMsg(errmsg)
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+    Public Function calc_choke_p(pt As PTtype, Optional calc_p_down As Integer = 0) As PTtype
+        'Function calculates end node pressure for choke (weather upstream or downstream)
+        Dim p_sn As Double, t_u As Double
+        Dim P_en As Double
+        Dim counter As Double
+        Dim eps As Double
+        Dim eps_p As Double
+        Const max_iters As Integer = 25
+        Dim void As Double
+        Dim q_l As Double
+        Dim P_en_min As Double
+        Dim P_en_max As Double
+        Dim i As Integer
+
+        Dim q_good As Boolean
+        Dim p_good As Boolean
+
+        Try
+            p_sn = pt.p_atma
+            t_u = pt.t_C
+            counter = 0
+
+            eps = fluid.qliq_sm3day * 0.0001 'set precision equal to 0.01%
+            eps_p = const_pressure_tolerance
+
+            If (calc_p_down = 0) Then 'Calculate upstream pressure given downstream
+                'Solve for upstream pressure
+                i = 1
+                counter = 0
+                Do
+                    ' ищем давление на входе заведомо превышающее необходимое для обеспечения заданного потока
+                    counter = counter + 1
+                    i = 2 * i
+                    P_en_max = p_sn * i
+                    q_l = calc_choke_qliq_sm3day(P_en_max, p_sn, t_u)
+                Loop Until q_l > fluid.qliq_sm3day Or counter > max_iters
+
+                If q_l <= fluid.qliq_sm3day Then   ' значит поиск дебита не увенчался успехом
+                    AddLogMsg("calc_choke_P(calc_p_down = 0): no solution found for rate = " & String.Format("{0:0.##}", fluid.qliq_sm3day))
+                End If
+
+                ' определим нижнюю границу поиска давления
+                P_en_min = i * p_sn / 2
+                counter = 0
+                Do
+                    ' ищем точное значение давления на входе обеспечивающего дебит
+                    ' потенциально можно ускорить если не делить отрезок пополам а использовать линейное приближение (характеристика должна быть довольно гладкой)
+                    counter = counter + 1
+                    P_en = (P_en_min + P_en_max) / 2
+                    q_l = calc_choke_qliq_sm3day(P_en, p_sn, t_u)
+                    If q_l > fluid.qliq_sm3day Then
+                        P_en_max = P_en
+                    Else
+                        P_en_min = P_en
+                    End If
+                    q_good = Abs(fluid.qliq_sm3day - q_l) < eps
+                    p_good = Abs(P_en_min - P_en_max) < eps_p
+                Loop Until (q_good And p_good) Or counter > max_iters
+
+                If (counter > max_iters) And (Abs(fluid.qliq_sm3day - q_l) > eps * 100) Then ' значит поиск дебита не увенчался успехом
+                    AddLogMsg("calc_choke_P(calc_p_down = 0): number of iterations too much, no solution found for rate = " & String.Format("{0:0.##}", fluid.qliq_sm3day))
+                End If
+            End If
+            Dim p_cr As Double
+            If (calc_p_down = 1) Then 'Calculate downstream pressure given upstream
+                'Solve for upstream pressure
+                'Calculate critical oil rate
+                q_l = calc_choke_qliq_sm3day(p_sn, 0, t_u)
+                If (fluid.qliq_sm3day - q_l) > 0.0001 Then 'Given oil rate can't be archieved
+                    P_en = -1
+                Else
+                    If (q_l - fluid.qliq_sm3day) < 0.0001 Then
+                        calc_choke_p = Set_PT(0, 0)
+                        P_en = 0
+                    Else
+                        i = 1
+                        counter = 0
+                        Do
+                            i = 2 * i
+                            P_en_min = p_sn / i
+                            q_l = calc_choke_qliq_sm3day(p_sn, P_en_min, t_u)
+                        Loop Until q_l > fluid.qliq_sm3day Or counter > max_iters
+
+                        If q_l <= fluid.qliq_sm3day Then   ' значит поиск дебита не увенчался успехом
+                            AddLogMsg("calc_choke_P(calc_p_down = 1):no solution found for rate = " & String.Format("{0:0.##}", fluid.qliq_sm3day))
+                        End If
+                        P_en_max = 2 * p_sn / i
+                        counter = 0
+                        Do
+                            counter = counter + 1
+                            P_en = (P_en_min + P_en_max) / 2
+                            q_l = calc_choke_qliq_sm3day(p_sn, P_en, t_u)
+                            If q_l > fluid.qliq_sm3day Then
+                                P_en_min = P_en
+                            Else
+                                P_en_max = P_en
+                            End If
+                        Loop Until Abs(fluid.qliq_sm3day - q_l) < eps Or counter > max_iters
+                        If counter > max_iters Then   ' значит поиск дебита не увенчался успехом
+                            AddLogMsg("calc_choke_P(calc_p_down = 1): number of iterations exeeded, no solution found for rate = " & String.Format("{0:0.##}", fluid.qliq_sm3day))
+                        End If
+                    End If
+                End If
+            End If
+            calc_choke_p.p_atma = P_en
+            calc_choke_p.t_C = t_u    ' пока предполагаем для штуцера температура не меняется
+
+            Exit Function
+        Catch ex As Exception
+            Dim errmsg As String
+            errmsg = "CChoke.calc_choke_P: error"
+            AddLogMsg(errmsg)
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+    'Function calculates upstream node pressure for choke
+    Public Function calc_choke_p_buf(PTLine As PTtype) As PTtype
+        'Arguments
+        'PTline_atma - line pressure (downstream) ( (atma)) and temperature ( (C))
+        'Return upstream pressure and temperature
+
+        Dim eps As Double
+        Dim eps_q As Double
+        eps = 0.001
+        eps_q = 0.1
+        Try
+            If (d_choke_m > d_up_m - 2 * eps) Or (d_choke_m < 0.001) Or (fluid.qliq_sm3day < eps_q) Then
+                calc_choke_p_buf = PTLine
+                Exit Function
+            End If
+            calc_choke_p_buf = calc_choke_p(PTLine, 0)
+            Exit Function
+        Catch ex As Exception
+            calc_choke_p_buf = Set_PT(0, 0)
+            Dim errmsg As String
+            errmsg = "Cchoke.calc_choke_p_buf: error. set calc_choke_p_buf = 0 : p_line_atma  = " & PTLine.p_atma & "  t_choke_C = " & PTLine.t_C
+            AddLogMsg(errmsg)
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
 End Class

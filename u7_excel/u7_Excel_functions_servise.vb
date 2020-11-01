@@ -65,9 +65,9 @@ Public Module u7_Excel_function_servise
         ' результат - закодированная строка
         'description_end
 
-        Dim str As String
-        Dim frmt As String
-        Dim frmt_int As String
+        'Dim str As String
+        'Dim frmt As String
+        'Dim frmt_int As String
 
         Dim pvt_dict As New Dictionary(Of String, Double)
 

@@ -137,11 +137,13 @@ Public Module u7_types
         Public d_cas_min_m As Double              ' минимальный диаметр обсадной колонны, заданный производителем оборудования
         Public d_shaft_m As Double             ' диаметр вала для насоса
         Public area_shaft_m2 As Double            ' площадь поперечного сечения вала   (дублирует диаметр, но задается производителем)
-        Public shaft_power_limit_W As Double       ' максимальная мощность передаваемая валом на номинальной частоте
-        Public shaft_power_limit_max_W As Double    ' максимальная мощность передаваемая валом на номинальной частоте для высокопрочного вала
-        Public housing_pressure_limit_atma As Double ' максимальное давление на корпус
-        Public nom_slip_rpm As Double
+        Public power_limit_shaft_kW As Double       ' максимальная мощность передаваемая валом на номинальной частоте
+        Public power_limit_shaft_max_kW As Double    ' максимальная мощность передаваемая валом на номинальной частоте для высокопрочного вала
+        Public pressure_limit_housing_atma As Double ' максимальное давление на корпус
+        Public slip_nom_rpm As Double
         Public eff_max As Double
+        Public d_motor_od_m As Double
+        Public height_stage_m As Double
     End Structure
 
     ' Structure of extended description of multiphase flow parameters at a point

@@ -13,7 +13,6 @@ Public Module u7_const
     Public Const esp_db_name = "\ESP_json.db"
     ' only database as global variable here
     ' in order to reduce db file read
-    Public ESP_base_dictionary As Dictionary(Of String, ESP_dict)
     ' ----  below same cose as for VBA version
     Public Const const_unifloc_version = "7.24 net"
 

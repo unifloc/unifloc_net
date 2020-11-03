@@ -6,7 +6,7 @@
 '=======================================================================================
 ' Модуль для расчетов по режимам работы УЭЦН Excel
 Option Explicit On
-Public Module u7_ESP
+Public Module u7_Excel_functions_ESP
 
     Public Function ESP_head_m(
         ByVal qliq_m3day As Double,
@@ -27,22 +27,23 @@ Public Module u7_ESP
 
         Try
             Dim esp As New UnfClassLibrary.CESPpump
+            esp.Class_Initialize()
             Call esp.set_ID(pump_id)
             If esp Is Nothing Then
                 ESP_head_m = 0
                 Exit Function
             End If
 
-            Dim c_calibr_head As Double
-            Dim c_calibr_rate As Double
-            Dim c_calibr_power As Double
-            Call read_ESP_calibr(c_calibr, c_calibr_head, c_calibr_rate, c_calibr_power)
+            'Dim c_calibr_head As Double
+            'Dim c_calibr_rate As Double
+            'Dim c_calibr_power As Double
+            ' Call read_ESP_calibr(c_calibr, c_calibr_head, c_calibr_rate, c_calibr_power)  не работает функция калибровки, ссылаемся на clbr, который пуст
 
             esp.freq_Hz = freq_Hz
             esp.stage_num = num_stages
-            qliq_m3day = qliq_m3day / c_calibr_rate
+            qliq_m3day = qliq_m3day / esp.c_calibr_rate
             ESP_head_m = esp.get_ESP_head_m(qliq_m3day, num_stages, mu_cSt)
-            ESP_head_m = ESP_head_m * c_calibr_head
+            ESP_head_m = ESP_head_m * esp.c_calibr_head
             Exit Function
         Catch ex As Exception
             ESP_head_m = -1
@@ -78,6 +79,7 @@ Public Module u7_ESP
 
         Try
             Dim esp As New UnfClassLibrary.CESPpump
+            esp.Class_Initialize()
             Call esp.set_ID(pump_id)
             If esp Is Nothing Then
                 ESP_power_W = 0
@@ -128,6 +130,7 @@ Public Module u7_ESP
 
         Try
             Dim esp As New UnfClassLibrary.CESPpump
+            esp.Class_Initialize()
             Call esp.set_ID(pump_id)
             If esp Is Nothing Then
                 ESP_eff_fr = 0
@@ -164,6 +167,7 @@ Public Module u7_ESP
 
         Try
             Dim esp As New UnfClassLibrary.CESPpump
+            esp.Class_Initialize()
             Call esp.set_ID(pump_id)
             If esp Is Nothing Then
                 ESP_name = "no name"
@@ -195,6 +199,7 @@ Public Module u7_ESP
         'description_end
         Try
             Dim esp As New UnfClassLibrary.CESPpump
+            esp.Class_Initialize()
             Call esp.set_ID(pump_id)
             If esp Is Nothing Then
                 ESP_rate_max_sm3day = 0
@@ -224,6 +229,7 @@ Public Module u7_ESP
 
         Try
             Dim esp As New UnfClassLibrary.CESPpump
+            esp.Class_Initialize()
             Call esp.set_ID(pump_id)
             If esp Is Nothing Then
                 ESP_optRate_m3day = 0
@@ -323,6 +329,7 @@ Public Module u7_ESP
         Dim arr(,) As Object
         'Dim clbr
         Dim esp As New UnfClassLibrary.CESPpump
+        esp.Class_Initialize()
         Dim c_calibr_head As Double
         Dim c_calibr_rate As Double
         Dim c_calibr_power As Double

@@ -15,6 +15,8 @@ Option Explicit On
 Imports System.Math
 Imports System.IO
 Imports Newtonsoft.Json
+Imports System.Linq
+Imports System.Data.Linq
 
 Public Class CESPpump
     ' геометрические параметры насоса
@@ -23,7 +25,7 @@ Public Class CESPpump
     Public angle_deg As Double             ' угол установки УЭЦН (предполагается, что по глубине угол не меняется) ' not used for 7.24
 
     ' общие параметры
-    Public fluid As CPVT                   ' флюид движущийся через насос (с учтом сепарации газа)
+    Public fluid As New CPVT                   ' флюид движущийся через насос (с учтом сепарации газа)
     Public c_calibr_head As Double         ' деградация характеристики УЭЦН по напору 
     Public c_calibr_rate As Double         ' деградация характеристики УЭЦН по дебиту
     Public c_calibr_power As Double        ' деградация по мощности (она же по КПД системы)
@@ -74,32 +76,80 @@ Public Class CESPpump
 
     Public gassep_M_Nm As Double
 
-    Private Sub Class_Initialize()
-        correct_visc_ = True
+    Public ESP_base_dictionary As New Dictionary(Of String, ESP_dict)
+    Public qliq_m3day As Double
 
-        c_calibr_head = 1 ' по умолчанию нет деградации
-        c_calibr_rate = 1 ' по умолчанию нет деградации
-        c_calibr_power = 1 ' по умолчанию нет деградации
+    Public Sub Class_Initialize(Optional ByVal correct_visc As Boolean = True,
+                                 Optional ByVal c_calibr_head_ As Double = 1,
+                                 Optional ByVal c_calibr_rate_ As Double = 1,
+                                 Optional ByVal c_calibr_power_ As Double = 1,
+                                 Optional ByVal stage_num_ As Integer = 1,
+                                 Optional ByVal freq_Hz_ As Double = 50,
+                                 Optional ByVal gas_correct_ As Double = 1,
+                                 Optional ByVal turb_head_factor_ As Double = 1,
+                                 Optional ByVal turb_rate_factor_ As Double = 1,
+                                 Optional ByVal dnum_stages_integrate_ As Integer = 1,
+                                 Optional ByVal h_mes_top_m_ As Double = 1000,
+                                 Optional ByVal corr_visc_eff As Double = 1,
+                                 Optional ByVal angle_deg_ As Double = 0,
+                                 Optional ByVal t_int_C As Double = 0,
+                                 Optional ByVal t_dis_C As Double = 0,
+                                 Optional ByVal p_int_atma As Double = 0,
+                                 Optional ByVal p_dis_atma As Double = 0,
+                                 Optional ByVal power_fluid_Wt As Double = 0,
+                                 Optional ByVal power_ESP_Wt As Double = 0,
+                                 Optional ByVal eff_ESP_d As Double = 0,
+                                 Optional ByVal head_real_m As Double = 0,
+                                 Optional ByVal db_json_string_ As String = "",
+                                 Optional ByVal gas_frac_intake As Double = 0,
+                                 Optional ByVal gas_corr As Double = 0,
+                                 Optional ByVal gassep_M_N_ As Double = 0,
+                                 Optional ByVal calc_from_dis As Boolean = False,
+                                 Optional ByVal qliq_m3day_ As Double = 0)
 
-        stage_num = 1
-        freq_Hz = 50
+        correct_visc_ = correct_visc
+
+        c_calibr_head = c_calibr_head_ ' по умолчанию нет деградации
+        c_calibr_rate = c_calibr_rate_ ' по умолчанию нет деградации
+        c_calibr_power = c_calibr_power_ ' по умолчанию нет деградации
+
+        stage_num = stage_num_
+        freq_Hz = freq_Hz_
 
         Call corrections_clear()
+        corr_visc_eff_ = corr_visc_eff
+        gas_correct = gas_correct_
 
-        gas_correct = 1
+        turb_head_factor = turb_head_factor_ ' 2 ' 0.5
+        turb_rate_factor = turb_rate_factor_ ' 1.1 '0.9
+        dnum_stages_integrate = dnum_stages_integrate_
 
-        turb_head_factor = 1 ' 2 ' 0.5
-        turb_rate_factor = 1 ' 1.1 '0.9
-        dnum_stages_integrate = 1
+        h_mes_top_m = h_mes_top_m_
 
-        h_mes_top_m = 1000
+        angle_deg = angle_deg_
+        t_int_C_ = t_int_C
+        t_dis_C_ = t_dis_C
+        p_int_atma_ = p_int_atma
+        p_dis_atma_ = p_dis_atma
+        power_fluid_Wt_ = power_fluid_Wt
+        power_ESP_Wt_ = power_ESP_Wt
+        eff_ESP_d_ = eff_ESP_d
+        head_real_m_ = head_real_m
+        db_json_string = db_json_string_
+        gas_frac_intake_ = gas_frac_intake
+        gas_corr_ = gas_corr
+        gassep_M_Nm = gassep_M_N_
+        calc_from_dis_ = calc_from_dis
+        qliq_m3day = qliq_m3day_
     End Sub
 
-    Private Sub corrections_clear()
+    Private Sub corrections_clear(Optional ByVal corr_visc_h As Double = 1,
+                                  Optional ByVal corr_visc_q As Double = 1,
+                                  Optional ByVal corr_visc_pow As Double = 1)
 
-        corr_visc_h_ = 1
-        corr_visc_q_ = 1
-        corr_visc_pow_ = 1
+        corr_visc_h_ = corr_visc_h
+        corr_visc_q_ = corr_visc_q
+        corr_visc_pow_ = corr_visc_pow
         '    corr_visc_eff_ = 1
         '    c_calibr_head = 1
         '    c_calibr_power = 1
@@ -288,7 +338,7 @@ Public Class CESPpump
         Dim b As Double                  ' отношение частот
         With db_
             b = .freq_Hz / freq_Hz  ' определим отношение реальной частоты УЭЦН к номинальной для которой заданы характеристики
-            'calc_ESP_head_nominal_m = b ^ (-2) * stage_num * crv_interpolation(.rate_points, .head_points, b * q_m3day, 2)(1, 1)
+            calc_ESP_head_nominal_m = b ^ (-2) * stage_num * crv_interpolation(.rate_points, .head_points, b * q_m3day, 2)
             calc_ESP_head_nominal_m = calc_ESP_head_nominal_m '* corr_visc_h_  ' учтем коррекцию на вязкость
         End With
     End Function
@@ -431,21 +481,26 @@ Public Class CESPpump
 
         'Dim ss As String
         'Dim line_from_file As String
-        Dim lines_all As String
+        'Dim lines_all As String
         Dim fname As String
 
         fname = Directory.GetCurrentDirectory & esp_db_name
+        Console.WriteLine(fname)
         Try
-            Using reader As New StreamReader(fname)
-                lines_all = reader.ReadToEnd
-            End Using
+            'Using reader As New StreamReader(fname)
+            '    lines_all = reader.ReadToEnd
+            'End Using
             'open fname for input as #1
             'Do While Not eof(1)
             '    line input #1, line_from_file
             '    lines_all = lines_all & line_from_file & vbCrLf
             'Loop
             'close #1
-            ESP_base_dictionary = CType(JsonConvert.DeserializeObject(lines_all), Dictionary(Of String, ESP_dict))
+            'Dim list As New List(Of ESP_dict)
+            Dim json As String
+            json = File.ReadAllText(fname)
+            ESP_base_dictionary = JsonConvert.DeserializeObject(Of Dictionary(Of String, ESP_dict))(json)
+            'ESP_base_dictionary = JsonConvert.DeserializeObject(lines_all)
 
             Exit Sub
         Catch ex As Exception
@@ -462,10 +517,14 @@ Public Class CESPpump
         Dim dict As ESP_dict
         Dim j As Integer, num As Integer
 
-        If ESP_base_dictionary Is Nothing Then
+        If ESP_base_dictionary.Count = 0 Then
             Call read_json_to_dict()
         End If
-        dict = ESP_base_dictionary(ESP_ID)
+        'dict = CType((From esp In ESP_base_dictionary
+        'Where esp.ID = ESP_ID
+        'Select Case esp.Data), Data_prop)
+        dict = ESP_base_dictionary.Item(ESP_ID)
+        'dict = ESP_base_dictionary.ID(ESP_ID)
         db_json_string = JsonConvert.SerializeObject(dict)
         Try
             num = dict.rate_points.Count
@@ -476,7 +535,7 @@ Public Class CESPpump
                 ReDim .power_points(0 To num)
                 ReDim .eff_points(0 To num)
 
-                For j = 1 To num
+                For j = 1 To num - 1
                     .head_points(j) = dict.head_points(j)
                     .rate_points(j) = dict.rate_points(j)
                     .power_points(j) = dict.power_points(j)
@@ -484,7 +543,7 @@ Public Class CESPpump
                 Next j
 
                 ' read all data from first line in DB table
-                .ID = dict.ID
+                .ID = ESP_ID
                 .manufacturer = dict.manufacturer
                 .name = dict.name
                 .stages_max = dict.stages_max
@@ -503,7 +562,7 @@ Public Class CESPpump
                 .power_limit_shaft_max_kW = dict.power_limit_shaft_max_kW
                 .pressure_limit_housing_atma = dict.pressure_limit_housing_atma
 
-                If dict.height_stage_m <> "" Then
+                If Not dict.height_stage_m = 0 Then
                     .height_stage_m = dict.height_stage_m
                 Else
                     .height_stage_m = 0.05   ' по умолчанию 5 см высота. Можно сделать зависимость от дебита
@@ -994,7 +1053,7 @@ Public Class CESPpump
         q_m3day = q_m3day / corr_visc_q_   ' делаем коррекцию по вязкости
         With db_
             b = .freq_Hz / freq_Hz
-            'get_ESP_power_W = 1000 * b ^ (-3) * stage_num_to_calc * crv_interpolation(.rate_points, .power_points, b * q_m3day, 2)(1, 1)
+            get_ESP_power_W = 1000 * b ^ (-3) * stage_num_to_calc * crv_interpolation(.rate_points, .power_points, b * q_m3day, 2)
             If get_ESP_power_W < 0 Then
                 get_ESP_power_W = 0
             End If
@@ -1021,7 +1080,7 @@ Public Class CESPpump
         End If
         q_m3day = q_m3day / corr_visc_q_   ' делаем коррекцию по вязкости
         b = db_.freq_Hz / freq_Hz
-        'get_ESP_effeciency_fr = crv_interpolation(db_.rate_points, db_.eff_points, b * q_m3day, 2)(1, 1)
+        get_ESP_effeciency_fr = crv_interpolation(db_.rate_points, db_.eff_points, b * q_m3day, 2)
         If get_ESP_effeciency_fr < 0 Then
             get_ESP_effeciency_fr = 0
         End If

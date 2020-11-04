@@ -37,7 +37,8 @@ Module u7_crv
         'Dim X_Range(,) As Double
         'Dim Y_Range(,) As Double
         Dim i As Integer
-        Dim crv As New CInterpolation
+        Dim crv As CInterpolation
+        crv = New CInterpolation
         Dim interp_type As String
         Dim y_out(,) As Double
         ReDim y_out(0 To 1, 1)
@@ -46,7 +47,7 @@ Module u7_crv
             ' прочитаем все исходные вектора с листа и подготовим выходной массив
             'Call read_xy_vectors(x_points, y_points, x_val, x_arr, y_arr, x_val_arr, y_out)
             ' формируем объект функции для работы с ним
-            For i = 1 To x_points.GetUpperBound(0)
+            For i = 0 To x_points.GetUpperBound(0)
                 crv.AddPoint(x_points(i), y_points(i))
             Next i
 

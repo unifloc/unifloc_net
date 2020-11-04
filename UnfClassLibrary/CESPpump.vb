@@ -535,7 +535,7 @@ Public Class CESPpump
                 ReDim .power_points(0 To num)
                 ReDim .eff_points(0 To num)
 
-                For j = 1 To num - 1
+                For j = 0 To num - 1
                     .head_points(j) = dict.head_points(j)
                     .rate_points(j) = dict.rate_points(j)
                     .power_points(j) = dict.power_points(j)

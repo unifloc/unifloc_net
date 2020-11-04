@@ -829,6 +829,9 @@ Public Class CInterpolation
             For i = 0 To FkPoint - 1
                 xval(i) = FPoints(i).x
                 yval(i) = FPoints(i).y
+                If i = 0 Then
+                    yval(i) = FMaxY   ' обнуляет нулевой эллемент массива, поэтому временно сделал так
+                End If
                 dval(i) = 0 ' todo - need find a way to specify derivatives
             Next i
 

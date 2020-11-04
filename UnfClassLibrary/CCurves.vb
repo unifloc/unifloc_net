@@ -14,11 +14,10 @@
 Option Explicit On
 
 Public Class CCurves
-    Private curves As IDictionary 'словарь кривых с результатами расчетов 
-
+    Private curves As New Dictionary(Of String, CInterpolation) 'словарь кривых с результатами расчетов 
     Public ReadOnly Property Item(key As String) As CInterpolation
         Get
-            If curves.Contains(key) Then
+            If curves.ContainsKey(key) Then
                 Item = curves.Item(key)
             Else
                 Item = New CInterpolation
@@ -35,7 +34,7 @@ Public Class CCurves
     End Property
 
     Public Sub ClearPoints()
-        Dim crv As CCurves
+        Dim crv As CInterpolation
         For Each crv In curves.Values
             Call crv.ClearPoints
         Next crv

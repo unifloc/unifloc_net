@@ -86,17 +86,17 @@ Public Module u7_Excel_functions_ESP
                 Exit Function
             End If
 
-            Dim c_calibr_head As Double
-            Dim c_calibr_rate As Double
-            Dim c_calibr_power As Double
-            Call read_ESP_calibr(c_calibr, c_calibr_head, c_calibr_rate, c_calibr_power)
+            'Dim c_calibr_head As Double
+            'Dim c_calibr_rate As Double
+            'Dim c_calibr_power As Double
+            'Call read_ESP_calibr(c_calibr, c_calibr_head, c_calibr_rate, c_calibr_power)
 
 
             esp.freq_Hz = freq_Hz
             esp.stage_num = num_stages
-            qliq_m3day = qliq_m3day / c_calibr_rate
+            qliq_m3day = qliq_m3day / esp.c_calibr_rate
             ESP_power_W = esp.get_ESP_power_W(qliq_m3day, num_stages, mu_cSt)
-            ESP_power_W = ESP_power_W * c_calibr_power
+            ESP_power_W = ESP_power_W * esp.c_calibr_power
             Exit Function
         Catch ex As Exception
             Dim msg As String
@@ -137,17 +137,17 @@ Public Module u7_Excel_functions_ESP
                 Exit Function
             End If
 
-            Dim c_calibr_head As Double
-            Dim c_calibr_rate As Double
-            Dim c_calibr_power As Double
-            Call read_ESP_calibr(c_calibr, c_calibr_head, c_calibr_rate, c_calibr_power)
+            'Dim c_calibr_head As Double
+            'Dim c_calibr_rate As Double
+            'Dim c_calibr_power As Double
+            'Call read_ESP_calibr(c_calibr, c_calibr_head, c_calibr_rate, c_calibr_power)
 
             esp.freq_Hz = freq_Hz
             esp.stage_num = num_stages
-            qliq_m3day = qliq_m3day / c_calibr_rate
+            qliq_m3day = qliq_m3day / esp.c_calibr_rate
             esp.correct_visc_let = True
             ESP_eff_fr = esp.get_ESP_effeciency_fr(qliq_m3day, mu_cSt)
-            ESP_eff_fr = ESP_eff_fr * c_calibr_head * c_calibr_rate / c_calibr_power
+            ESP_eff_fr = ESP_eff_fr * esp.c_calibr_head * esp.c_calibr_rate / esp.c_calibr_power
             Exit Function
         Catch ex As Exception
             Dim msg As String
@@ -279,7 +279,7 @@ Public Module u7_Excel_functions_ESP
             Optional ByVal num_stages As Integer = 1,
             Optional ByVal freq_Hz As Double = 50,
             Optional ByVal pump_id As Integer = 737,
-            Optional ByVal str_PVT As String = UnfClassLibrary.PVT_DEFAULT,
+            Optional ByVal str_PVT As String = "",
             Optional ByVal t_intake_C As Double = 50,
             Optional ByVal t_dis_C As Double = 50,
             Optional ByVal calc_along_flow As Boolean = 1,
@@ -326,13 +326,14 @@ Public Module u7_Excel_functions_ESP
         ' q_gas_sm3day    - свободный газ в потоке
         ' результат   - массив значений включающий
         'description_end
-        Dim arr(,) As Object
+        Dim arr(1, 0) As Object
         'Dim clbr
-        Dim esp As New UnfClassLibrary.CESPpump
+        Dim esp As UnfClassLibrary.CESPpump
+        esp = New UnfClassLibrary.CESPpump
+        'Dim c_calibr_head As Double
+        'Dim c_calibr_rate As Double
+        'Dim c_calibr_power As Double
         esp.Class_Initialize()
-        Dim c_calibr_head As Double
-        Dim c_calibr_rate As Double
-        Dim c_calibr_power As Double
 
         Try
             ' get ESP from database
@@ -348,11 +349,11 @@ Public Module u7_Excel_functions_ESP
                     .fluid = PVT_decode_string(str_PVT)
                 End If
 
-                Call read_ESP_calibr(c_calibr, c_calibr_head, c_calibr_rate, c_calibr_power)
+                'Call read_ESP_calibr(c_calibr, c_calibr_head, c_calibr_rate, c_calibr_power)
 
-                .c_calibr_head = c_calibr_head
-                .c_calibr_rate = c_calibr_rate
-                .c_calibr_power = c_calibr_power
+                .c_calibr_head = esp.c_calibr_head
+                .c_calibr_rate = esp.c_calibr_rate
+                .c_calibr_power = esp.c_calibr_power
 
                 .fluid.qliq_sm3day = qliq_sm3day
                 .fluid.Fw_perc = fw_perc
@@ -367,10 +368,10 @@ Public Module u7_Excel_functions_ESP
 
                 'arr = .array_out(out_curves_num_points)
                 If calc_along_flow Then
-                    arr(0, 0) = .p_dis_atma
+                    arr(0, 0) = .p_dis_atma_ ' убрал get, добавил _
                     arr(1, 0) = "p_dis_atma"
                 Else
-                    arr(0, 0) = .p_int_atma
+                    arr(0, 0) = .p_int_atma_
                     arr(1, 0) = "p_intake_atma"
                 End If
             End With
@@ -926,35 +927,35 @@ Public Module u7_Excel_functions_ESP
     '--------------- Вспомогательные функции ---------------
     '=======================================================
 
-    Private Sub read_ESP_calibr(ByVal c_calibr As Double,
-                                ByRef c_calibr_head As Double,
-                                ByRef c_calibr_rate As Double,
-                                ByRef c_calibr_power As Double)
+    'Private Sub read_ESP_calibr(ByVal c_calibr As Double,
+    '                            ByRef c_calibr_head As Double,
+    '                            ByRef c_calibr_rate As Double,
+    '                            ByRef c_calibr_power As Double)
 
 
-        c_calibr_head = 1
-        c_calibr_rate = 1
-        c_calibr_power = 1
+    '    c_calibr_head = 1
+    '    c_calibr_rate = 1
+    '    c_calibr_power = 1
 
 
-        Dim clbr() As Double
+    '    Dim clbr() As Double
 
-        ' set calibration properties
-        'clbr = array1d_from_range(c_calibr, num_only:=True, no_zero:=False)
-        c_calibr_head = clbr(1)
-        If clbr.GetUpperBound(0) >= 2 Then
-            c_calibr_rate = clbr(2)
-        Else
-            c_calibr_rate = 1
-        End If
+    '    ' set calibration properties
+    '    'clbr = array1d_from_range(c_calibr, num_only:=True, no_zero:=False)
+    '    c_calibr_head = clbr(1)
+    '    If clbr.GetUpperBound(0) >= 2 Then
+    '        c_calibr_rate = clbr(2)
+    '    Else
+    '        c_calibr_rate = 1
+    '    End If
 
-        If clbr.GetUpperBound(0) >= 3 Then
-            c_calibr_power = clbr(3)
-        Else
-            c_calibr_power = 1
-        End If
+    '    If clbr.GetUpperBound(0) >= 3 Then
+    '        c_calibr_power = clbr(3)
+    '    Else
+    '        c_calibr_power = 1
+    '    End If
 
 
-    End Sub
+    'End Sub
 
 End Module

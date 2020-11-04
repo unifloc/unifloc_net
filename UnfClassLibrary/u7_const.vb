@@ -10,7 +10,7 @@
 Public Module u7_const
 
     Public Const vbObjectError = 1000   ' added for compatibility with VBA
-    Public Const esp_db_name = "\ESP_json.db"
+    Public Const esp_db_name = "..\..\..\..\ESP_json.db"
     ' only database as global variable here
     ' in order to reduce db file read
     ' ----  below same cose as for VBA version

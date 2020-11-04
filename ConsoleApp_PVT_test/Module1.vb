@@ -29,11 +29,11 @@ Module Module1
         'Console.WriteLine("test: " + CStr(rhg))
         'Console.ReadKey(True)
 
-        Dim test_esp
+        Dim test_esp, test
         'Dim test As String
-        test_esp = u7_excel.u7_Excel_functions_ESP.ESP_head_m(qliq_m3day:=30, num_stages:=100, freq_Hz:=50, pump_id:=750, mu_cSt:=0.5)
-        'test = JsonConvert.SerializeObject(test_choke)
-        Console.WriteLine("test: " + CStr(test_esp))
+        test_esp = u7_excel.u7_Excel_functions_ESP.ESP_p_atma(qliq_sm3day:=3, fw_perc:=12, p_calc_atma:=50, num_stages:=100, freq_Hz:=50, pump_id:=750)
+        test = JsonConvert.SerializeObject(test_esp)
+        Console.WriteLine("test: " + test)
         Console.ReadKey(True)
     End Sub
 End Module

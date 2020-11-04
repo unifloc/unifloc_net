@@ -42,8 +42,8 @@ Public Class CESPpump
     Private t_int_C_ As Double             ' температура потока на приемной сетке УЭЦН (учитывается нагрев двигателем)
     Private t_dis_C_ As Double             ' температура потока на выкиде насоса (учитывается нагрев в насосе)
     ' параметры работы насоса для которых был проведен расчет
-    Private p_int_atma_ As Double          ' давление на приеме насоса (используется для расчета рабочих характеристик)
-    Private p_dis_atma_ As Double          ' давление на выкиде насоса
+    Public p_int_atma_ As Double          ' давление на приеме насоса (используется для расчета рабочих характеристик)
+    Public p_dis_atma_ As Double          ' давление на выкиде насоса
 
     Private power_fluid_Wt_ As Double      ' Мощность передаваемая УЭЦН жидкости
     Private power_ESP_Wt_ As Double        ' Мощность потребляемая ЭЦН с вала (механическая)
@@ -78,6 +78,11 @@ Public Class CESPpump
 
     Public ESP_base_dictionary As New Dictionary(Of String, ESP_dict)
     Public qliq_m3day As Double
+    'Public dPStage As Double
+    'Public Pst_atma As Double
+    'Public q_mix_ As Double
+    'Public dPav As Double
+    'Public q_mix__degr As Double
 
     Public Sub Class_Initialize(Optional ByVal correct_visc As Boolean = True,
                                  Optional ByVal c_calibr_head_ As Double = 1,
@@ -95,7 +100,7 @@ Public Class CESPpump
                                  Optional ByVal t_int_C As Double = 0,
                                  Optional ByVal t_dis_C As Double = 0,
                                  Optional ByVal p_int_atma As Double = 0,
-                                 Optional ByVal p_dis_atma As Double = 0,
+                                 Optional ByVal p_dis_atma__ As Double = 0,
                                  Optional ByVal power_fluid_Wt As Double = 0,
                                  Optional ByVal power_ESP_Wt As Double = 0,
                                  Optional ByVal eff_ESP_d As Double = 0,
@@ -106,6 +111,11 @@ Public Class CESPpump
                                  Optional ByVal gassep_M_N_ As Double = 0,
                                  Optional ByVal calc_from_dis As Boolean = False,
                                  Optional ByVal qliq_m3day_ As Double = 0)
+        '  Optional ByVal dPStage_ As Double = 0,
+        ' Optional ByVal Pst_atma_ As Double = 0,
+        ' Optional ByVal q_mix As Double = 0,
+        'Optional ByVal dPav_ As Double = 0,
+        'Optional ByVal q_mix__degr_ As Double = 0)
 
         correct_visc_ = correct_visc
 
@@ -130,7 +140,7 @@ Public Class CESPpump
         t_int_C_ = t_int_C
         t_dis_C_ = t_dis_C
         p_int_atma_ = p_int_atma
-        p_dis_atma_ = p_dis_atma
+        p_dis_atma_ = p_dis_atma__
         power_fluid_Wt_ = power_fluid_Wt
         power_ESP_Wt_ = power_ESP_Wt
         eff_ESP_d_ = eff_ESP_d
@@ -141,6 +151,11 @@ Public Class CESPpump
         gassep_M_Nm = gassep_M_N_
         calc_from_dis_ = calc_from_dis
         qliq_m3day = qliq_m3day_
+        'dPStage = dPStage_
+        ' Pst_atma = Pst_atma_
+        'q_mix_ = q_mix
+        ' dPav = dPav_
+        'q_mix__degr = q_mix__degr_
     End Sub
 
     Private Sub corrections_clear(Optional ByVal corr_visc_h As Double = 1,
@@ -260,17 +275,17 @@ Public Class CESPpump
         End Get
     End Property
 
-    Public ReadOnly Property p_int_atma() As Double
-        Get
-            p_int_atma = p_int_atma_
-        End Get
-    End Property
+    'Public ReadOnly Property p_int_atma() As Double
+    '    Get
+    '        p_int_atma = p_int_atma_
+    '    End Get
+    'End Property
 
-    Public ReadOnly Property p_dis_atma() As Double
-        Get
-            p_dis_atma = p_dis_atma_
-        End Get
-    End Property
+    'Public ReadOnly Property p_dis_atma() As Double
+    '    Get
+    '        p_dis_atma = p_dis_atma_
+    '    End Get
+    'End Property
 
     Public ReadOnly Property t_int_C() As Double
         Get
@@ -484,7 +499,7 @@ Public Class CESPpump
         'Dim lines_all As String
         Dim fname As String
 
-        fname = Directory.GetCurrentDirectory & esp_db_name
+        fname = Path.GetFullPath(Directory.GetCurrentDirectory & esp_db_name)
         Console.WriteLine(fname)
         Try
             'Using reader As New StreamReader(fname)
@@ -680,6 +695,20 @@ Public Class CESPpump
         Call ESP_dPIntegration(p_atma, t_intake_C, t_dis_C, Not calc_from_intake, saveCurve)
     End Sub
 
+    'Public Sub esp_Initialize(Optional ByVal dPStage_ As Double = 0,
+    '                             Optional ByVal Pst_atma_ As Double = 0,
+    '                             Optional ByVal q_mix As Double = 0,
+    '                             Optional ByVal dPav_ As Double = 0,
+    '                             Optional ByVal q_mix__degr_ As Double = 0)
+
+
+    '    dPStage = dPStage_
+    '    Pst_atma = Pst_atma_
+    '    q_mix_ = q_mix
+    '    dPav = dPav_
+    '    q_mix__degr = q_mix__degr_
+    'End Sub
+
     Private Sub ESP_dPIntegration(ByVal p_atma As Double,
                               ByVal t_intake_C As Double,
                    Optional t_dis_C As Double = 0,
@@ -711,6 +740,8 @@ Public Class CESPpump
         Dim nn As Integer    ' номер ступени от приема для записи в архив
         Dim dPav As Double   ' поправки на давление и температуру при интегрировании
         Dim dTav As Double
+        'Class_Initialize()
+        'esp_Initialize()
 
         dNst = dnum_stages_integrate ' для начала пытаемся интегрировать такими шагами
         ' если тут поставить 10 будет быстрее считать за счет снижение числа шагов
@@ -798,8 +829,8 @@ Public Class CESPpump
                     curves.Item("corr_visc_eff_").AddPoint(N, corr_visc_eff_)
                     curves.Item("gas_corr_").AddPoint(N, gas_corr_)
 
-                    p_curve_.AddPoint(HmesStage_m(CDbl(N)), Pst_atma)
-                    t_curve_.AddPoint(HmesStage_m(CDbl(N)), Tst_C)
+                    p_curve_.AddPoint(HmesStage_m(N), Pst_atma)
+                    t_curve_.AddPoint(HmesStage_m(N), Tst_C)
                 End If
 
                 If calc_from_dis And saveCurve Then

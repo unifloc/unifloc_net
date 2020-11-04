@@ -9,8 +9,7 @@
 'префикс unf_ символизиует что это функции Unifloc для внутреннего использования при кодировании
 ' converted 16/05/2020
 
-
-Module u7_PVT
+Public Module u7_PVT
 
     Function Unf_pvt_viscosity_dead_oil_Standing_cP(ByVal Temperature_K As Double,
                                                     ByVal gamma_oil As Double) As Double

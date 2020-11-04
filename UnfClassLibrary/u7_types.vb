@@ -52,14 +52,14 @@ Public Module u7_types
         byCorrealation = 0
     End Enum
 
-    '' standard port sizes for whetherford r1 glv
-    'Public Enum GLV_R1_PORT_SIZE
-    '    R1_port_1_8 = 3.18
-    '    R1_port_5_32 = 3.97
-    '    R1_port_3_16 = 4.76
-    '    R1_port_1_4 = 6.35
-    '    R1_port_5_16 = 7.94
-    'End Enum
+    ' standard port sizes for whetherford r1 glv
+    Public Enum GLV_R1_PORT_SIZE
+        R1_port_1_8 = 3.18
+        R1_port_5_32 = 3.97
+        R1_port_3_16 = 4.76
+        R1_port_1_4 = 6.35
+        R1_port_5_16 = 7.94
+    End Enum
 
     ' multiphase flow in pipe and well calculation method
     Public Structure PARAMCALC

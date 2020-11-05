@@ -29,12 +29,12 @@ Module Module1
         'Console.WriteLine("test: " + CStr(rhg))
         'Console.ReadKey(True)
 
-        Dim test_esp, test
+        Dim test_gl, test
         'Dim test As String
-        test_esp = u7_excel.u7_Excel_functions_ESP.ESP_p_atma(qliq_sm3day:=3, fw_perc:=12, p_calc_atma:=50, num_stages:=100, freq_Hz:=50, pump_id:=750)
+        test_gl = u7_excel.u7_Excel_functions_GL.GLV_IPO_p_open(p_bellow_atma:=60, p_out_atma:=50, t_C:=80, d_port_mm:=25)
         'test = JsonConvert.SerializeObject(test_esp)
         'test = u7_excel.u7_Excel_functions_ESP.ESP_head_m(qliq_m3day:=10, )
-        Console.WriteLine("test: " + CStr(test))
+        Console.WriteLine("test: " + CStr(test_gl))
         Console.ReadKey(True)
     End Sub
 End Module

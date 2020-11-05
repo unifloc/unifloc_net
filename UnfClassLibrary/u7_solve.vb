@@ -43,6 +43,9 @@
             ElseIf func_name = "calc_choke_dp_error_qgas_atm" Then
                 y1 = calc_choke_dp_error_qgas_atm(x1, CoeffA)
                 y2 = calc_choke_dp_error_qgas_atm(x2, CoeffA)
+            ElseIf func_name = "calc_dq_gas_pv_vkr_valve" Then
+                y1 = calc_dq_gas_pv_vkr_valve(x1, CoeffA)
+                y2 = calc_dq_gas_pv_vkr_valve(x2, CoeffA)
             End If
             With prm
                 If y1 * y2 > 0 Then
@@ -75,6 +78,8 @@
                         y_temp = calc_choke_dp_error_qliq_atm(x_temp, CoeffA)
                     ElseIf func_name = "calc_choke_dp_error_qgas_atm" Then
                         y_temp = calc_choke_dp_error_qgas_atm(x_temp, CoeffA)
+                    ElseIf func_name = "calc_dq_gas_pv_vkr_valve" Then
+                        y_temp = calc_dq_gas_pv_vkr_valve(x_temp, CoeffA)
                     End If
                     If Math.Abs(y_temp) < .y_tolerance Then
                         solve_equation_bisection = True
@@ -296,6 +301,23 @@
             pt = .calc_choke_p(pt0, calc_p_down:=0)
             calc_choke_dp_error_qgas_atm = (pt.p_atma - p_in_atma)
         End With
+
+    End Function
+    ' функция расчета ошибки в расходе газа при произвольном давлении внутри клапана
+    Public Function calc_dq_gas_pv_vkr_valve(Pv As Double, CoeffA() As Object) As Double
+        Dim q_gas As Double, d_mm As Double, Pu As Double, pd As Double, gg As Double, t As Double
+        Dim d_vkr As Double
+        Dim c_calibr As Double
+
+        d_mm = CoeffA(0)
+        d_vkr = CoeffA(1)
+        Pu = CoeffA(2)
+        pd = CoeffA(3)
+        gg = CoeffA(4)
+        t = CoeffA(5)
+        c_calibr = CoeffA(5)
+
+        calc_dq_gas_pv_vkr_valve = CDbl(GLV_q_gas_sm3day(d_mm, Pu, Pv, gg, t, c_calibr)(0)) - CDbl(GLV_q_gas_sm3day(d_vkr, Pv, pd, gg, t, c_calibr)(0))  ' (0)(0)
 
     End Function
 End Module

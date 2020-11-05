@@ -243,6 +243,4 @@ Public Module u7_const
     Public Const MinCountPoints_calc_pwf_pcas_hdyn_atma = 5
 
 
-
-
 End Module

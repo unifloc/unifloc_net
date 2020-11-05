@@ -165,13 +165,6 @@ Public Module u7_Excel_functions_GL
             Dim Pd_Pu As Double
             Dim crit As Boolean
             Dim p_crit_out_atma As Double
-            ' пытаюсь убрать ругающийся вызов функции
-            Dim t As Double
-            Dim pvt As UnfClassLibrary.CPVT
-            pvt = New UnfClassLibrary.CPVT
-            pvt.Class_Initialize()
-            pvt.gamma_g = gamma_g
-            pvt.Calc_PVT(pvt.pb_atma, t)
 
             crit = False
             Pd_Pu = p_out_atma / p_in_atma
@@ -193,8 +186,7 @@ Public Module u7_Excel_functions_GL
             End If
 
             K = 1.31   ' = Cp/Cv (approx 1.31 for natural gases(R Brown) or 1.25 (Mischenko) )
-            t = t_C + UnfClassLibrary.const_t_K_zero_C
-            K = pvt.Heat_capacity_ratio_gas   'UnfClassLibrary.Unf_pvt_gas_heat_capacity_ratio(gamma_g, t_C + UnfClassLibrary.const_t_K_zero_C)
+            K = UnfClassLibrary.Unf_pvt_gas_heat_capacity_ratio(gamma_g, t_C + UnfClassLibrary.const_t_K_zero_C)
 
             d_in = d_mm * 0.03937
             a = UnfClassLibrary.const_Pi * d_in ^ 2 / 4         'area of choke, sq in.
@@ -280,9 +272,9 @@ Public Module u7_Excel_functions_GL
             pv_atma = prm.x_solution
             res1 = GLV_q_gas_sm3day(d_port_mm, p_in_atma, pv_atma, gamma_g, t_C)
             res2 = GLV_q_gas_sm3day(d_vkr_mm, pv_atma, p_out_atma, gamma_g, t_C)
-            q_gas_sm3day = res1(0)(0)
-            crit1 = res1(0)(2)
-            crit2 = res2(0)(2)
+            q_gas_sm3day = res1(0) '(0)(0)
+            crit1 = res1(2) '(0)(2)
+            crit2 = res2(2) '(0)(2)
 
             'Dim new_array(1) As Object
             'new_array(0) = (q_gas_sm3day, p_in_atma, pv_atma, p_out_atma, q_gas_sm3day, crit1, crit2)
@@ -338,21 +330,21 @@ Public Module u7_Excel_functions_GL
             If calc_along_flow Then
                 p_in = p_calc_atma
                 p1 = GLV_p_atma(d_port_mm, p_in, q_gas_sm3day, gamma_g, t_C, True)
-                p_v_atma = p1(0)(0)
+                p_v_atma = p1(0) '(0)(0)
                 If p_v_atma < 0 Then
                     ' critical flow through the port achived
-                    q_gas_sm3day = p1(0)(1)
-                    p_v_atma = p1(0)(2)
+                    q_gas_sm3day = p1(1) '(0)(1)
+                    p_v_atma = p1(2) '(0)(2)
                     crit1 = True
                 End If
 
                 If d_vkr_mm > 0 Then
                     p2 = GLV_p_atma(d_vkr_mm, p_v_atma, q_gas_sm3day, gamma_g, t_C, True)
-                    p_atma = p2(0)(0)
+                    p_atma = p2(0) '(0)(0)
                     If p_atma < 0 Then
                         ' critical flow through the vkrutka achived
-                        q_gas_sm3day = p2(0)(1)
-                        p_atma = p2(0)(2)
+                        q_gas_sm3day = p2(1) '(0)(1)
+                        p_atma = p2(2) '(0)(2)
                         crit2 = True
                     End If
                 Else
@@ -366,22 +358,22 @@ Public Module u7_Excel_functions_GL
                 p_out = p_calc_atma
                 If d_vkr_mm > 0 Then
                     p1 = GLV_p_atma(d_vkr_mm, p_calc_atma, q_gas_sm3day, gamma_g, t_C, False)
-                    p_v_atma = p1(0)(0)
+                    p_v_atma = p1(0) '(0)(0)
                     If p_v_atma < 0 Then
                         ' critical flow through the vkrutka achived
-                        q_gas_sm3day = p1(0)(1)
-                        p_v_atma = p1(0)(2)
+                        q_gas_sm3day = p1(1) '(0)(1)
+                        p_v_atma = p1(2) '(0)(2)
                         crit2 = True
                     End If
                 Else
                     p_v_atma = p_calc_atma
                 End If
                 p2 = GLV_p_atma(d_port_mm, p_v_atma, q_gas_sm3day, gamma_g, t_C, False)
-                p_atma = p2(0)(0)
+                p_atma = p2(0) '(0)(0)
                 If p_atma < 0 Then
                     ' critical flow through the port achived
-                    q_gas_sm3day = p2(0)(1)
-                    p_atma = p2(0)(2)
+                    q_gas_sm3day = p2(1) '(0)(1)
+                    p_atma = p2(2) '(0)(2)
                     crit1 = True
                 End If
                 p_in = p_atma
@@ -454,7 +446,7 @@ Public Module u7_Excel_functions_GL
                 Pu = p_calc_atma
                 pd = 1
                 qres = GLV_q_gas_sm3day(d_mm, Pu, pd, gamma_g, t_C)
-                Qmax_m3day = qres(0)(0)
+                Qmax_m3day = qres(0) '(0)(0)
                 Pcrit = pd
                 If Qmax_m3day > q_gas_sm3day And Pu > p_open_atma Then
                     Func = "calc_dq_gas_pd_valve"
@@ -811,7 +803,7 @@ Public Module u7_Excel_functions_GL
             '        T_pc = PseudoTemperatureStanding(gamma_gas)
             '        p_pc = PseudoPressureStanding(gamma_gas)
             '        Z = ZFactorDranchuk(T_K / T_pc, P_MPa / p_pc)
-            ' z = UnfClassLibrary.Unf_pvt_Zgas_d(t_K, p_MPa, gamma_gas)''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            z = UnfClassLibrary.Unf_pvt_Zgas_d(t_K, p_MPa, gamma_gas)
 
             eps = eps * 39.3701 'convert m to in
 
@@ -831,7 +823,7 @@ Public Module u7_Excel_functions_GL
 
 
             Dim mu_g As Double
-            'mu_g = UnfClassLibrary.Unf_pvt_viscosity_gas_cP(t_K, p_MPa, z, gamma_gas)''''''''''''''''''''''''''''''''''''
+            mu_g = UnfClassLibrary.Unf_pvt_viscosity_gas_cP(t_K, p_MPa, z, gamma_gas)
 
             Dim Re As Double
             Re = 0.020107 * gamma_gas * Abs(qg_sc) * deq / mu_g / DA ^ 2

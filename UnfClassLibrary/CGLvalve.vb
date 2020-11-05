@@ -55,7 +55,7 @@ Public Class CGLvalve
                           Optional ByVal Ap_mm2_ As Double = 0,
                           Optional ByVal PREF_ As Double = 0,
                           Optional ByVal IPO_ As Boolean = False,
-                          Optional ByVal d_vkr_mm As Object = 1,
+                          Optional ByVal d_vkr_mm() As Double = Nothing,
                           Optional ByVal _vkr_eff_mm As Double = 0,
                           Optional ByVal d_port_mm As Double = 0)
 
@@ -198,14 +198,14 @@ Public Class CGLvalve
 
         If (p_out_atma < p_intake_atma) And (d_port_mm_ > 0) And (d_vkr_eff_mm_ = 0) Then
             rslt = GLV_q_gas_sm3day(d_port_mm_, p_intake_atma, p_out_atma, fluid.gamma_g, t_in_C)
-            calc_q_gas_sm3day = rslt(0) ' (0)
-            p_crit_atma = rslt(0) ' (1)
-            crit_flow = rslt(0) ' (2)
+            calc_q_gas_sm3day = rslt(0) ' (0)(0)
+            p_crit_atma = rslt(1) ' (0)(1)
+            crit_flow = rslt(2) ' (0)(2)
             '  p_v_atma = p_out_atma
         ElseIf (p_out_atma < p_intake_atma) And (d_port_mm_ > 0) And (d_vkr_eff_mm_ > 0) Then
             rslt = GLV_q_gas_vkr_sm3day(d_port_mm_, d_vkr_eff_mm_, p_intake_atma, p_out_atma, fluid.gamma_g, t_in_C)
-            calc_q_gas_sm3day = rslt(0) ' (0)
-            p_v_atma = rslt(0) ' (2)
+            calc_q_gas_sm3day = rslt(0) ' (0)(0)
+            p_v_atma = rslt(2) ' (0)(2)
         End If
 
         If IPO Then
@@ -234,8 +234,8 @@ Public Class CGLvalve
         '    p_out_atma = GLV_p_atma(d_port_mm_, p_v_atma, q_gas_scm3day, fluid.gamma_g, t_C, True)
         '    calc_p_out_atma = p_out_atma
         '
-        p_v_atma = res(0) ' (2)
-        p_in_atma = res(0) ' (0)
+        p_v_atma = res(2) ' (0)(2)
+        p_in_atma = res(0) ' (0)(0)
 
         If IPO Then
             ' need check open condition
@@ -264,8 +264,8 @@ Public Class CGLvalve
         '    Else
         '        p_v_atma = p_out_atma
         '    End If
-        p_v_atma = res(0) '(2)
-        p_in_atma = res(0) '(0)
+        p_v_atma = res(2) '(0)(2)
+        p_in_atma = res(0) '(0)(0)
         calc_p_in_atma = p_in_atma
     End Function
 

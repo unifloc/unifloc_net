@@ -296,21 +296,21 @@
             If calc_along_flow Then
                 p_in = p_calc_atma
                 p1 = GLV_p_atma(d_port_mm, p_in, q_gas_sm3day, gamma_g, t_C, True)
-                p_v_atma = p1(0) '(0)
+                p_v_atma = p1(0) '(0)(0)
                 If p_v_atma < 0 Then
                     ' critical flow through the port achived
-                    q_gas_sm3day = p1(0) '(1)
-                    p_v_atma = p1(0) '(2)
+                    q_gas_sm3day = p1(1) '(0)(1)
+                    p_v_atma = p1(2) '(0)(2)
                     crit1 = True
                 End If
 
                 If d_vkr_mm > 0 Then
                     p2 = GLV_p_atma(d_vkr_mm, p_v_atma, q_gas_sm3day, gamma_g, t_C, True)
-                    p_atma = p2(0) '(0)
+                    p_atma = p2(0) '(0)(0)
                     If p_atma < 0 Then
                         ' critical flow through the vkrutka achived
-                        q_gas_sm3day = p2(0) '(1)
-                        p_atma = p2(0) '(2)
+                        q_gas_sm3day = p2(1) '(0)(1)
+                        p_atma = p2(2) '(0)(2)
                         crit2 = True
                     End If
                 Else
@@ -324,22 +324,22 @@
                 p_out = p_calc_atma
                 If d_vkr_mm > 0 Then
                     p1 = GLV_p_atma(d_vkr_mm, p_calc_atma, q_gas_sm3day, gamma_g, t_C, False)
-                    p_v_atma = p1(0) '(0)
+                    p_v_atma = p1(0) '(0)(0)
                     If p_v_atma < 0 Then
                         ' critical flow through the vkrutka achived
-                        q_gas_sm3day = p1(0) '(1)
-                        p_v_atma = p1(0) '(2)
+                        q_gas_sm3day = p1(1) '(0)(1)
+                        p_v_atma = p1(2) '(0)(2)
                         crit2 = True
                     End If
                 Else
                     p_v_atma = p_calc_atma
                 End If
                 p2 = GLV_p_atma(d_port_mm, p_v_atma, q_gas_sm3day, gamma_g, t_C, False)
-                p_atma = p2(0) '(0)
+                p_atma = p2(0) '(0)(0)
                 If p_atma < 0 Then
                     ' critical flow through the port achived
-                    q_gas_sm3day = p2(0) '(1)
-                    p_atma = p2(0) '(2)
+                    q_gas_sm3day = p2(1) '(0)(1)
+                    p_atma = p2(2) '(0)(2)
                     crit1 = True
                 End If
                 p_in = p_atma
@@ -400,9 +400,9 @@
             pv_atma = prm.x_solution
             res1 = GLV_q_gas_sm3day(d_port_mm, p_in_atma, pv_atma, gamma_g, t_C)
             res2 = GLV_q_gas_sm3day(d_vkr_mm, pv_atma, p_out_atma, gamma_g, t_C)
-            q_gas_sm3day = res1(0) '(0)
-            crit1 = res1(0) '(2)
-            crit2 = res2(0) '(2)
+            q_gas_sm3day = res1(0) '(0)(0)
+            crit1 = res1(2) '(0)(2)
+            crit2 = res2(2) '(0)(2)
 
             'Dim new_array(1) As Object
             'new_array(0) = (q_gas_sm3day, p_in_atma, pv_atma, p_out_atma, q_gas_sm3day, crit1, crit2)

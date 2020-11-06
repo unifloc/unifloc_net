@@ -28,3 +28,35 @@ D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.vbproj.CopyCompl
 D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.dll
 D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.xml
 D:\Git\Git Данила\unifloc_net\u7_excel\obj\Debug\u7_excel.pdb
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\bin\Debug\u7_excel.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\bin\Debug\u7_excel.pdb
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\bin\Debug\u7_excel.xml
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\bin\Debug\UnfClassLibrary.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\bin\Debug\alglibnet2.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\bin\Debug\UnfClassLibrary.pdb
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\obj\Debug\u7_excel.vbprojAssemblyReference.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\obj\Debug\u7_excel.Resources.resources
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\obj\Debug\u7_excel.vbproj.GenerateResource.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\obj\Debug\u7_excel.vbproj.CoreCompileInputs.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\obj\Debug\u7_excel.vbproj.CopyComplete
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\obj\Debug\u7_excel.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\obj\Debug\u7_excel.xml
+C:\Users\Sevrn\Desktop\C#\unifloc_net\u7_excel\obj\Debug\u7_excel.pdb
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\bin\Debug\u7_excel.dll
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\bin\Debug\u7_excel.pdb
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\bin\Debug\u7_excel.xml
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\bin\Debug\Newtonsoft.Json.dll
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\bin\Debug\UnfClassLibrary.dll
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\bin\Debug\alglibnet2.dll
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\bin\Debug\UnfClassLibrary.pdb
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\bin\Debug\Newtonsoft.Json.xml
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\obj\Debug\u7_excel.vbprojAssemblyReference.cache
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\obj\Debug\u7_excel.Resources.resources
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\obj\Debug\u7_excel.vbproj.GenerateResource.cache
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\obj\Debug\u7_excel.vbproj.CoreCompileInputs.cache
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\obj\Debug\u7_excel.vbproj.CopyComplete
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\obj\Debug\u7_excel.dll
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\obj\Debug\u7_excel.xml
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\u7_excel\obj\Debug\u7_excel.pdb

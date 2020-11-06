@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj": {}
+    "C:\\Users\\isaev\\Downloads\\unifloc_net-dev_3\\unifloc_net-dev_3\\UnfClassLibrary\\UnfClassLibrary.vbproj": {}
   },
   "projects": {
-    "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj": {
+    "C:\\Users\\isaev\\Downloads\\unifloc_net-dev_3\\unifloc_net-dev_3\\UnfClassLibrary\\UnfClassLibrary.vbproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
+        "projectUniqueName": "C:\\Users\\isaev\\Downloads\\unifloc_net-dev_3\\unifloc_net-dev_3\\UnfClassLibrary\\UnfClassLibrary.vbproj",
         "projectName": "UnfClassLibrary",
-        "projectPath": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\UnfClassLibrary.vbproj",
+        "projectPath": "C:\\Users\\isaev\\Downloads\\unifloc_net-dev_3\\unifloc_net-dev_3\\UnfClassLibrary\\UnfClassLibrary.vbproj",
         "packagesPath": "C:\\Users\\isaev\\.nuget\\packages\\",
-        "outputPath": "D:\\Git\\Git Данила\\unifloc_net\\UnfClassLibrary\\obj\\",
+        "outputPath": "C:\\Users\\isaev\\Downloads\\unifloc_net-dev_3\\unifloc_net-dev_3\\UnfClassLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\isaev\\AppData\\Roaming\\NuGet\\NuGet.Config",

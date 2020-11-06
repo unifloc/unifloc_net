@@ -19,3 +19,25 @@ D:\Git\Git Данила\unifloc_net\UnfClassLibrary\bin\Debug\netstandard2.0\Unf
 D:\Git\Git Данила\unifloc_net\UnfClassLibrary\bin\Debug\netstandard2.0\alglibnet2.dll
 D:\Git\Git Данила\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbproj.CopyComplete
 D:\Git\Git Данила\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbproj.CoreCompileInputs.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\bin\Debug\netstandard2.0\UnfClassLibrary.deps.json
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\bin\Debug\netstandard2.0\UnfClassLibrary.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\bin\Debug\netstandard2.0\UnfClassLibrary.pdb
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\bin\Debug\netstandard2.0\alglibnet2.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbprojAssemblyReference.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.AssemblyInfoInputs.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.AssemblyInfo.vb
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbproj.CoreCompileInputs.cache
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbproj.CopyComplete
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.dll
+C:\Users\Sevrn\Desktop\C#\unifloc_net\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.pdb
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\bin\Debug\netstandard2.0\UnfClassLibrary.deps.json
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\bin\Debug\netstandard2.0\UnfClassLibrary.dll
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\bin\Debug\netstandard2.0\UnfClassLibrary.pdb
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\bin\Debug\netstandard2.0\alglibnet2.dll
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbprojAssemblyReference.cache
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.AssemblyInfoInputs.cache
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.AssemblyInfo.vb
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbproj.CoreCompileInputs.cache
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.vbproj.CopyComplete
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.dll
+C:\Users\isaev\Downloads\unifloc_net-dev_3\unifloc_net-dev_3\UnfClassLibrary\obj\Debug\netstandard2.0\UnfClassLibrary.pdb

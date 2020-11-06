@@ -59,18 +59,51 @@ Public Class CChoke
 
     Private p_dcr As Double ' recovered downstream pressure at critical pressure ratio
 
-    Private Sub Class_Initialize()
-        K = 0.826  'K - Discharge coefficient (optional, default  is 0.826)
-        f = 1.25
-        c_vw = 4176
-        c_calibr_fr = 1
-        c_degrad_choke_ = 0
+    Public Sub Class_Initialize(Optional ByVal K_ As Double = 0.826,
+                                Optional ByVal f_ As Double = 1.25,
+                                Optional ByVal c_vw_ As Double = 1,
+                                Optional ByVal c_calibr_fr_ As Double = 1,
+                                Optional ByVal c_degrad_choke As Double = 0,
+                                Optional ByVal d_up_m_ As Double = 0.1,
+                                Optional ByVal d_down_m_ As Double = 0.1,
+                                Optional ByVal d_choke_m_ As Double = 0.01,
+                                Optional ByVal t_choke_C_ As Double = 30,
+                                Optional ByVal q_liqmax_m3day As Double = 0,
+                                Optional ByVal t_choke_throat_C As Double = 0,
+                                Optional ByVal t_choke_av_C As Double = 0,
+                                Optional ByVal sonic_vel_msec_ As Double = 0,
+                                Optional ByVal a_u_ As Double = 0,
+                                Optional ByVal a_c_ As Double = 0,
+                                Optional ByVal a_r_ As Double = 0,
+                                Optional ByVal P_r_ As Double = 0,
+                                Optional ByVal v_s_ As Double = 0,
+                                Optional ByVal q_m_ As Double = 0,
+                                Optional ByVal p_dcr_ As Double = 0)
+
+        K = K_  'K - Discharge coefficient (optional, default  is 0.826)
+        f = f_
+        c_vw = c_vw_
+        c_calibr_fr = c_calibr_fr_
+        c_degrad_choke_ = c_degrad_choke
 
         'параметры по умолчанию
-        d_up_m = 0.1
-        d_down_m = 0.1
-        d_choke_m = 0.01
-        t_choke_C = 30
+        d_up_m = d_up_m_
+        d_down_m = d_down_m_
+        d_choke_m = d_choke_m_
+        t_choke_C = t_choke_C_
+
+        q_liqmax_m3day_ = q_liqmax_m3day
+        t_choke_throat_C_ = t_choke_throat_C
+        t_choke_av_C_ = t_choke_av_C
+        sonic_vel_msec = sonic_vel_msec_
+
+        a_u = a_u_
+        a_c = a_c_
+        a_r = a_r_
+        P_r = P_r_
+        v_s = v_s_
+        q_m = q_m_
+        p_dcr = p_dcr_
     End Sub
 
     Public ReadOnly Property D_choke_mm() As Double

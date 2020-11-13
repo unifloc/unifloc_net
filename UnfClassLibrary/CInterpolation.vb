@@ -707,6 +707,46 @@ Public Class CInterpolation
         pcur.AddPoint(0, GetPoint(val))
         CutByValue = pcur
     End Function
+    Public Function CutByValueTrajectory(Optional cut_top_value As Double = 1.0E+20,
+                           Optional cut_bottom_value As Double = -1.0E-20) As CInterpolation
+
+        Dim i As Integer
+        Dim j As Integer
+        Dim FPts() As TDPoint
+
+        j = 1
+        For i = 1 To Num_points()
+
+            If PointX(i) < cut_top_value And PointX(i) > cut_bottom_value Then
+                If j = 1 And i > 1 And cut_bottom_value < FPoints(i - 1).x Then
+                    ReDim Preserve FPts(j)
+                    FPts(j - 1).x = cut_bottom_value
+                    FPts(j - 1).y = GetPoint(cut_bottom_value)
+                    FPts(j - 1).stable = False
+                    j = j + 1
+                End If
+
+                ReDim Preserve FPts(j)
+                FPts(j - 1) = FPoints(i - 1)
+                j = j + 1
+
+            End If
+        Next i
+
+        If cut_top_value < FPoints(i - 2).x Then
+            ReDim Preserve FPts(j - 1)
+            FPts(j - 1).x = cut_top_value
+            FPts(j - 1).y = GetPoint(cut_top_value)
+            FPts(j - 1).stable = False
+            j = j + 1
+        End If
+        If j < 3 Then
+            AddLogMsg("CInterpolation.CutByValue: too little points after cut = " & CStr(j - 1))
+        End If
+        FPoints = FPts
+        FkPoint = j - 1
+        Call UpdateStablePointsList()
+    End Function
 
     Public Function CutByCurve(crv As CInterpolation) As CInterpolation
         ' обрезание кривой с использованием другой кривой
@@ -892,7 +932,32 @@ Public Class CInterpolation
         End Try
     End Function
 
+    Public Sub load_from_range(range(,) As Double)
+        ' функция для чтения range [0..N,0..1] в кривую значений.
+        ' должна использоваться для чтения исходных данных с листа
+
+        Dim i As Integer
+        Dim NumVal As Integer
+        Dim X As Double, y As Double
+        Dim C2 As Integer
+
+        Call ClearPoints()
 
 
+        ' If TypeName(range) = "Range" Then range = range.Value2
 
+        ' читаем поэлементно, чтобы отсеять пустые ячейки по пути
+        C2 = range.GetUpperBound(2)
+        If C2 > 2 Then C2 = 2
+        For i = range.GetLowerBound(1) To range.GetUpperBound(1)
+            X = range(i, 1)
+            y = range(i, C2)
+            If isStepFunction Then
+                AddPoint(X, y, isStable:=True)
+            Else
+                AddPoint(X, y, isStable:=False)
+            End If
+
+        Next i
+    End Sub
 End Class

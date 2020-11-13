@@ -242,5 +242,4 @@ Public Module u7_const
     Public Const sDELIM As String = vbLf & vbNewLine
     Public Const MinCountPoints_calc_pwf_pcas_hdyn_atma = 5
 
-
 End Module

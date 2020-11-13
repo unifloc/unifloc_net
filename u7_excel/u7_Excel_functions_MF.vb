@@ -7,6 +7,7 @@
 'функции для проведения расчетов из интерфейса Excel
 'многофазный поток в трубах и элементах инфраструктуры
 Option Explicit On
+Imports System.Math
 
 Public Module u7_Excel_functions_MF
     Public Function MF_calibr_choke_fast(
@@ -376,4 +377,1048 @@ Public Module u7_Excel_functions_MF
         End Try
 
     End Function
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' функция расчета коэффициента Джоуля Томсона
+    Public Function MF_CJT_Katm(
+             ByVal p_atma As Double,
+             ByVal t_C As Double,
+    Optional ByVal str_PVT As String = "",
+    Optional ByVal qliq_sm3day As Double = 10,
+    Optional ByVal fw_perc As Double = 0)
+        ' p_atma      - давление, атм
+        ' t_C         - температура, С.
+        ' str_PVT     - encoded to string PVT properties of fluid
+        ' qliq_sm3day - liquid rate (at surface)
+        ' fw_perc     - water fraction (watercut)
+        ' output - number
+        'description_end
+
+
+        Try
+            Dim PVT As New UnfClassLibrary.CPVT
+            PVT = PVT_decode_string(str_PVT)
+            PVT.qliq_sm3day = qliq_sm3day
+            PVT.Fw_perc = fw_perc
+            Call PVT.Calc_PVT(p_atma, t_C)
+            MF_CJT_Katm = PVT.CJT_Katm
+            Exit Function
+        Catch ex As Exception
+            MF_CJT_Katm = -1
+            Dim errmsg As String
+            errmsg = "Error:MF_CJT_Katm:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' расчет объемного расхода газожидкостной смеси
+    ' для заданных термобарических условий
+    Public Function MF_q_mix_rc_m3day(
+             ByVal qliq_sm3day As Double,
+             ByVal fw_perc As Double,
+             ByVal p_atma As Double,
+             ByVal t_C As Double,
+    Optional ByVal str_PVT As String = "")
+        ' qliq_sm3day- дебит жидкости на поверхности
+        ' fw_perc    - объемная обводненность
+        ' p_atma     - давление, атм
+        ' t_C        - температура, С.
+        ' str_PVT    - закодированная строка с параметрами PVT.
+        '              если задана - перекрывает другие значения
+        ' результат  - число - расход ГЖС, м3/сут.
+        'description_end
+
+        Try
+            Dim PVT As New UnfClassLibrary.CPVT
+            PVT = PVT_decode_string(str_PVT)
+            PVT.Fw_perc = fw_perc
+            PVT.qliq_sm3day = qliq_sm3day
+            Call PVT.Calc_PVT(p_atma, t_C)
+            MF_q_mix_rc_m3day = PVT.Q_mix_rc_m3day
+            Exit Function
+        Catch ex As Exception
+            MF_q_mix_rc_m3day = -1
+            Dim errmsg As String
+            errmsg = "Error:MF_q_mix_rc_m3day:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' расчет плотности газожидкостной смеси для заданных  условий
+    Public Function MF_rho_mix_kgm3(
+             ByVal qliq_sm3day As Double,
+             ByVal fw_perc As Double,
+             ByVal p_atma As Double,
+             ByVal t_C As Double,
+    Optional ByVal str_PVT As String = "")
+        ' qliq_sm3day- дебит жидкости на поверхности
+        ' fw_perc    - объемная обводненность
+        ' p_atma     - давление, атм
+        ' t_C        - температура, С.
+        ' str_PVT    - закодированная строка с параметрами PVT.
+        '              если задана - перекрывает другие значения
+        ' результат  - число - плотность ГЖС, кг/м3.
+        'description_end
+
+        Try
+            Dim PVT As New UnfClassLibrary.CPVT
+            PVT = PVT_decode_string(str_PVT)
+            PVT.Fw_perc = fw_perc
+            PVT.qliq_sm3day = qliq_sm3day
+            Call PVT.Calc_PVT(p_atma, t_C)
+            MF_rho_mix_kgm3 = PVT.Rho_mix_rc_kgm3
+            Exit Function
+        Catch ex As Exception
+            MF_rho_mix_kgm3 = -1
+            Dim errmsg As String
+            errmsg = "Error:MF_rho_mix_kgm3:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+
+    End Function
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' расчет вязкости газожидкостной смеси
+    ' для заданных термобарических условий
+    Public Function MF_mu_mix_cP(
+            ByVal qliq_sm3day As Double,
+            ByVal fw_perc As Double,
+            ByVal p_atma As Double,
+            ByVal t_C As Double,
+   Optional ByVal str_PVT As String = "")
+        ' qliq_sm3day - дебит жидкости на поверхности
+        ' fw_perc     - объемная обводненность
+        ' p_atma      - давление, атм
+        ' t_C         - температура, С.
+        ' str_PVT     - закодированная строка с параметрами PVT.
+        '              если задана - перекрывает другие значения
+        ' результат   - число - вязкость ГЖС, м3/сут.
+        'description_end
+
+        Try
+            Dim PVT As New UnfClassLibrary.CPVT
+            PVT = PVT_decode_string(str_PVT)
+            PVT.Fw_perc = fw_perc
+            PVT.qliq_sm3day = qliq_sm3day
+            Call PVT.Calc_PVT(p_atma, t_C)
+            MF_mu_mix_cP = PVT.Mu_mix_cP
+            Exit Function
+        Catch ex As Exception
+            MF_mu_mix_cP = -1
+            Dim errmsg As String
+            errmsg = "Error:MF_mu_mix_cP:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' расчет доли газа в потоке
+    Public Function MF_gas_fraction_d(
+              ByVal p_atma As Double,
+              ByVal t_C As Double,
+     Optional ByVal fw_perc As Double = 0,
+     Optional ByVal str_PVT As String = "",
+     Optional ByVal ksep_add_fr As Double = 0)
+        ' p_atma   - давление, атм
+        ' t_C      - температура, С.
+        ' fw_perc  - обводненность объемная
+        ' str_PVT  - закодированная строка с параметрами PVT.
+        '            если задана - перекрывает другие значения
+        ' ksep_add_fr - коэффициент сепарации дополнительный
+        '           для сепарации заданной в потоке. применяется
+        '           для сепарации при искомом давлении
+        ' результат - число - доля газа в потоке
+        '              (расходная без проскальзования)
+        'description_end
+        Try
+            Dim PVT As New UnfClassLibrary.CPVT
+            PVT = PVT_decode_string(str_PVT)
+            PVT.Fw_perc = fw_perc
+            Call PVT.Calc_PVT(p_atma, t_C)
+            MF_gas_fraction_d = PVT.Gas_fraction_d(ksep_add_fr)
+            Exit Function
+        Catch ex As Exception
+            MF_gas_fraction_d = -1
+            Dim errmsg As String
+            errmsg = "Error:MF_gas_fraction_d:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+
+    End Function
+
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' расчет давления при котором
+    ' достигается заданная доля газа в потоке
+    Public Function MF_p_gas_fraction_atma(
+               ByVal free_gas_d As Double,
+               ByVal t_C As Double,
+               ByVal fw_perc As Double,
+      Optional ByVal str_PVT As String = "",
+      Optional ByVal ksep_add_fr As Double = 0)
+        ' free_gas_d - допустимая доля газа в потоке;
+        ' t_C        - температура, С;
+        ' fw_perc    - объемная обводненность, проценты %;
+        ' str_PVT    - закодированная строка с параметрами PVT.
+        '              Если задана - перекрывает другие значения.
+        ' ksep_add_fr - коэффициент сепарации дополнительный
+        '           для сепарации заданной в потоке. применяется
+        '           для сепарации при искомом давлении
+        ' результат  - число - давление, атма.
+        'description_end
+
+
+        Try
+            Dim PVT As New UnfClassLibrary.CPVT
+            PVT = PVT_decode_string(str_PVT)
+            PVT.Fw_perc = fw_perc
+            MF_p_gas_fraction_atma = PVT.P_gas_fraction_atma(free_gas_d, t_C, ksep_add_fr)
+            Exit Function
+        Catch ex As Exception
+            MF_p_gas_fraction_atma = -1
+            Dim errmsg As String
+            errmsg = "Error:MF_p_gas_fraction_atma:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+
+    End Function
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' расчет газового фактора
+    ' при котором достигается заданная доля газа в потоке
+    Public Function MF_rp_gas_fraction_m3m3(
+                ByVal free_gas_d As Double,
+                ByVal p_atma As Double,
+                ByVal t_C As Double,
+                ByVal fw_perc As Double,
+       Optional ByVal str_PVT As String = "",
+       Optional ByVal Rp_limit_m3m3 As Double = 500,
+       Optional ByVal ksep_add_fr As Double = 0)
+        ' free_gas_d - допустимая доля газа в потоке
+        ' p_atma     - давление, атм
+        ' t_C        - температура, С.
+        ' fw_perc    - объемная обводненность, проценты %;
+        ' str_PVT    - закодированная строка с параметрами PVT.
+        '              если задана - перекрывает другие значения
+        ' Rp_limit_m3m3 - верхняя граница оценки ГФ
+        ' ksep_add_fr - коэффициент сепарации дополнительный
+        '           для сепарации заданной в потоке. применяется
+        '           для сепарации при искомом давлении
+        ' результат  - число - газовый фактор, м3/м3.
+        'description_end
+        Try
+            Dim PVT As New UnfClassLibrary.CPVT
+            PVT = PVT_decode_string(str_PVT)
+            PVT.Fw_perc = fw_perc
+            MF_rp_gas_fraction_m3m3 = PVT.Rp_gas_fraction_m3m3(free_gas_d, p_atma, t_C, ksep_add_fr, Rp_limit_m3m3)
+            Exit Function
+        Catch ex As Exception
+            MF_rp_gas_fraction_m3m3 = -1
+            Dim errmsg As String
+            errmsg = "Error:MF_rp_gas_fraction_m3m3:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' расчет натуральной сепарации газа на приеме насоса
+    Public Function MF_ksep_natural_d(
+             ByVal qliq_sm3day As Double,
+             ByVal fw_perc As Double,
+             ByVal p_intake_atma As Double,
+    Optional ByVal t_intake_C As Double = 50,
+    Optional ByVal d_intake_mm As Double = 90,
+    Optional ByVal d_cas_mm As Double = 120,
+    Optional ByVal str_PVT As String = "")
+        ' qliq_sm3day   - дебит жидкости в поверхностных условиях
+        ' fw_perc       - обводненность
+        ' p_intake_atma - давление сепарации
+        ' t_intake_C    - температура сепарации
+        ' d_intake_mm   - диаметр приемной сетки
+        ' d_cas_mm      - диаметр эксплуатационной колонны
+        ' str_PVT       - закодированная строка с параметрами PVT.
+        '                 если задана - перекрывает другие значения
+        ' результат     - число - естественная сепарация
+        'description_end
+
+        Try
+            Dim fluid As New UnfClassLibrary.CPVT
+            fluid = PVT_decode_string(str_PVT)
+            fluid.qliq_sm3day = qliq_sm3day
+            fluid.Fw_perc = fw_perc
+            Call fluid.Calc_PVT(p_intake_atma, t_intake_C)
+            With fluid
+                MF_ksep_natural_d = UnfClassLibrary.unf_natural_separation(d_intake_mm / 1000, d_cas_mm / 1000, .qliq_sm3day, .Q_gas_sm3day, .Bo_m3m3, .Bg_m3m3, .Sigma_oil_gas_Nm, .Sigma_wat_gas_Nm, .Rho_oil_sckgm3, .Rho_gas_sckgm3, .Fw_perc)
+            End With
+            Exit Function
+        Catch ex As Exception
+            MF_ksep_natural_d = -1
+            Dim errmsg As String
+            errmsg = "Error:MF_ksep_natural_d:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' расчет общей сепарации на приеме насоса
+    Public Function MF_ksep_total_d(
+        ByVal SepNat As Double,
+        ByVal SepGasSep As Double)
+        ' SepNat        - естественная сепарация
+        ' SepGasSep     - искусственная сепарация (газосепаратор)
+        MF_ksep_total_d = SepNat + (1 - SepNat) * SepGasSep
+    End Function
+    'description_end
+
+
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    'расчет градиента давления
+    'с использованием многофазных корреляций
+    Public Function MF_dpdl_atmm(ByVal d_m As Double,
+             ByVal p_atma As Double,
+             ByVal Ql_rc_m3day As Double,
+             ByVal Qg_rc_m3day As Double,
+    Optional ByVal mu_oil_cP As Double = UnfClassLibrary.const_mu_o,
+    Optional ByVal mu_gas_cP As Double = UnfClassLibrary.const_mu_g,
+    Optional ByVal sigma_oil_gas_Nm As Double = UnfClassLibrary.const_sigma_oil_Nm,
+    Optional ByVal rho_lrc_kgm3 As Double = UnfClassLibrary.const_go_ * 1000,
+    Optional ByVal rho_grc_kgm3 As Double = UnfClassLibrary.const_gg_ * UnfClassLibrary.const_rho_air,
+    Optional ByVal eps_m As Double = 0.0001,
+    Optional ByVal theta_deg As Double = 90,
+    Optional ByVal hcorr As Integer = 1,
+    Optional ByVal param_out As Integer = 0,
+    Optional ByVal c_calibr_grav As Double = 1,
+    Optional ByVal c_calibr_fric As Double = 1)
+        ' расчет градиента давления по одной из корреляций
+        ' d_m - диаметр трубы в которой идет поток
+        ' p_atma - давление в точке расчета
+        ' Ql_rc_m3day - дебит жидкости в рабочих условиях
+        ' Qg_rc_m3day - дебит газа в рабочих условиях
+        ' mu_oil_cP - вязкость нефти в рабочих условиях
+        ' mu_gas_cP - вязкость газа в рабочих условиях
+        ' sigma_oil_gas_Nm - поверхностное натяжение
+        '              жидкость газ
+        ' rho_lrc_kgm3 - плотность нефти
+        ' rho_grc_kgm3 - плотность газа
+        ' eps_m     - шероховатость
+        ' theta_deg - угол от горизонтали
+        ' hcorr  - тип корреляции
+        ' param_out - параметр для вывода
+        ' c_calibr_grav - калибровка гравитации
+        ' c_calibr_fric - калибровка трения
+        'description_end
+
+        Dim PrGrad
+
+        Try
+            Select Case hcorr
+                Case 0
+
+                    PrGrad = UnfClassLibrary.unf_BegsBrillGradient(d_m, theta_deg, eps_m,
+                                    Ql_rc_m3day, Qg_rc_m3day,
+                                    mu_oil_cP, mu_gas_cP,
+                                    sigma_oil_gas_Nm,
+                                    rho_lrc_kgm3,
+                                    rho_grc_kgm3, , , c_calibr_grav, c_calibr_fric)
+                Case 1
+
+                    PrGrad = UnfClassLibrary.unf_AnsariGradient(d_m, theta_deg, eps_m,
+                                    Ql_rc_m3day, Qg_rc_m3day,
+                                    mu_oil_cP, mu_gas_cP,
+                                    sigma_oil_gas_Nm,
+                                    rho_lrc_kgm3,
+                                    rho_grc_kgm3,
+                                    p_atma, c_calibr_grav, c_calibr_fric)
+                Case 2
+
+                    PrGrad = UnfClassLibrary.unf_UnifiedTUFFPGradient(d_m, theta_deg, eps_m,
+                                    Ql_rc_m3day, Qg_rc_m3day,
+                                    mu_oil_cP, mu_gas_cP,
+                                    sigma_oil_gas_Nm,
+                                    rho_lrc_kgm3,
+                                    rho_grc_kgm3,
+                                    p_atma, c_calibr_grav, c_calibr_fric)
+                Case 3
+
+                    PrGrad = UnfClassLibrary.unf_GrayModifiedGradient(d_m, theta_deg, eps_m,
+                                    Ql_rc_m3day, Qg_rc_m3day,
+                                    mu_oil_cP, mu_gas_cP,
+                                    sigma_oil_gas_Nm,
+                                    rho_lrc_kgm3,
+                                    rho_grc_kgm3,
+                                    , , , c_calibr_grav, c_calibr_fric)
+                Case 4
+
+                    PrGrad = UnfClassLibrary.unf_HagedornandBrawnmodified(d_m, theta_deg, eps_m,
+                                    Ql_rc_m3day, Qg_rc_m3day,
+                                    mu_oil_cP, mu_gas_cP,
+                                    sigma_oil_gas_Nm,
+                                    rho_lrc_kgm3,
+                                    rho_grc_kgm3,
+                                    p_atma, , , , c_calibr_grav, c_calibr_fric)
+
+            End Select
+
+            If param_out = 0 Then
+                MF_dpdl_atmm = PrGrad
+            Else
+                MF_dpdl_atmm = PrGrad(param_out)
+            End If
+            Exit Function
+        Catch ex As Exception
+            MF_dpdl_atmm = -1
+            Dim errmsg As String
+            errmsg = "Error:MF_dpdl_atmm:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    '  подбор параметров потока через трубу при известном
+    '  перепаде давления с использованием многофазных корреляций
+    Public Function MF_calibr_pipeline(
+                 ByVal p_calc_from_atma As Double,
+                 ByVal p_calc_to_atma As Double,
+             ByVal t_calc_from_C As Double,
+             ByVal t_val As Double(,),
+             ByVal h_list_m As Double(,),
+             ByVal diam_list_mm As Double(,),
+             ByVal qliq_sm3day As Double,
+             ByVal fw_perc As Double,
+    Optional ByVal q_gas_sm3day As Double = 0,
+    Optional ByVal str_PVT As String = "",
+    Optional ByVal calc_flow_direction As Integer = 11,
+    Optional ByVal hydr_corr As UnfClassLibrary.H_CORRELATION = 0,
+    Optional ByVal temp_method As UnfClassLibrary.TEMP_CALC_METHOD = UnfClassLibrary.TEMP_CALC_METHOD.StartEndTemp,
+    Optional ByVal c_calibr() As Double = Nothing,
+    Optional ByVal roughness_m As Double = 0.0001,
+    Optional ByVal out_curves As Integer = 1,
+    Optional ByVal out_curves_num_points As Integer = 20,
+    Optional ByVal calibr_type As Integer = 0)
+
+        'p_calc_from_atma - давление начальное, атм
+        '                   граничное значение для проведения расчета
+        'p_calc_to_atma   - давление конечное, атм
+        '                   граничное значение для проведения расчета
+        ' t_calc_from_C - температура в точке где задано давление расчета
+        ' t_val     - температура вдоль трубопровода
+        '           если число то температура на другом конце трубы
+        '           если range или таблица [0..N,0..1] то температура
+        '           окружающей среды по вертикальной глубине, С
+        ' h_list_m  - траектория трубопровода, если число то измеренная
+        '           длина, range или таблица [0..N,0..1] то траектория
+        ' diam_list_mm  - внутрнний диаметр трубы, если число то задается
+        '           постоянный диаметр, если range или таблица [0..N,0..1]
+        '           то задается зависимость диаметра от измеренной длины
+        ' qliq_sm3day - дебит жидкости в поверхностных условиях, нм3/сут
+        '           если qliq_sm3day =0 и q_gas_sm3day > 0
+        '           тогда считается барботаж газа через жидкость
+        ' fw_perc   - обводненность объемная в стандартных условиях
+        ' q_gas_sm3day  - свободный газ нм3/сут. дополнительный к PVT потоку.
+        '           учитывается для барботажа или режима потока газа
+        '           в других случаях добавляется к общему потоку меняя rp
+        ' str_PVT   - закодированная строка с параметрами PVT.
+        '           если задана - перекрывает другие значения
+        '           если задан флаг gas_only = 1 то жидкость не учитывается
+        ' calc_flow_direction - направление расчета и потока относительно
+        '           координат.  11 расчет и поток по координате
+        '                       10 расчет по коордиате, поток против
+        '                       00 расчет и поток против координате
+        '                       01 расчет против координат, поток по
+        ' hydr_corr   - гидравлическая корреляция, H_CORRELATION
+        '           BeggsBrill = 0,
+        '           Ansari = 1,
+        '           Unified = 2,
+        '           Gray = 3,
+        '           HagedornBrown = 4,
+        '           SakharovMokhov = 5
+        ' temp_method  - метод расчета температуры
+        '           0 - линейное распределение по длине
+        '           1 - температура равна температуре окружающей среды
+        '           2 - расчет температуры с учетом эмиссии в окр. среду
+        ' c_calibr  - поправка на гравитационную составляющую
+        '           перепада давления, если дать ссылку на две ячейки,
+        '           то вторая будет поправка на трение.
+        ' roughness_m - шероховатость трубы
+        ' out_curves - флаг вывод значений между концами трубы
+        '           1 основные, 2 все значения.
+        '           вывод может замедлять расчет (не сильно)
+        ' out_curves_num_points - количество точек для вывода значений
+        '           между концами трубы.
+        ' calibr_type - тип калибровки
+        '          0 - подбор параметра c_calibr_grav
+        '          1 - подбор параметра c_calibr_fric
+        '          2 - подбор газового фактор
+        '          3 - подбор обводненности
+        ' результат   - массив с подобранным парамером и подробностями.
+        'description_end
+
+        If c_calibr Is Nothing Then
+            c_calibr = {1}
+        End If
+        Dim pipe As UnfClassLibrary.CPipe
+        pipe = New UnfClassLibrary.CPipe
+        pipe.Class_Initialize()
+        'Dim res(), res1()
+        Dim CoeffA(2)
+        Dim Func As String
+        Dim cal_type_string As String
+        Dim val_min As Double, val_max As Double
+        'Dim out, out_desc
+        Dim prm As UnfClassLibrary.CSolveParam
+        prm = New UnfClassLibrary.CSolveParam
+        prm.Class_Initialize()
+
+        Try
+            pipe = UnfClassLibrary.new_pipeline_with_stream(qliq_sm3day,
+                                fw_perc,
+                                h_list_m,
+                                t_calc_from_C,
+                                calc_flow_direction,
+                                str_PVT,
+                                diam_list_mm,
+                                hydr_corr,
+                                t_val,
+                                temp_method,
+                                c_calibr,
+                                roughness_m,
+                                q_gas_sm3day)
+
+            ' prepare solution function
+            CoeffA(0) = pipe
+            CoeffA(1) = p_calc_from_atma
+            CoeffA(2) = p_calc_to_atma
+
+            Select Case calibr_type
+                Case 0
+                    Func = "calc_pipe_dp_error_calibr_grav_atm"
+                    cal_type_string = "calibr_grav"
+                    val_min = 0.5
+                    val_max = 1.5
+                Case 1
+                    Func = "calc_pipe_dp_error_calibr_fric_atm"
+                    cal_type_string = "calibr_fric"
+                    val_min = 0.1
+                    val_max = 1
+                Case 2
+                    Func = "calc_pipe_dp_error_rp_atm"
+                    cal_type_string = "rp"
+                    val_min = 20 'pipe.fluid.rp_m3m3 * 0.5
+                    val_max = pipe.fluid.Rp_m3m3 * 2
+            ' Расширить диапазон поиска по газовому фактору может быть опасно
+            ' так как возможна неоднозначность решения
+            ' а текущий метод поиска работает только если есть одно решение
+                Case 3
+                    Func = "calc_pipe_dp_error_fw_atm"
+                    cal_type_string = "fw"
+                    val_min = 0
+                    val_max = 1
+                    If val_max > 1 Then val_max = 1
+                Case 4
+                    Func = "calc_pipe_dp_error_qliq_atm"
+                    cal_type_string = "qliq"
+                    val_min = 0
+                    val_max = pipe.fluid.qliq_sm3day * 1.5
+                Case 5
+                    Func = "calc_pipe_dp_error_qgas_atm"
+                    cal_type_string = "qgas"
+                    val_min = 0
+                    If q_gas_sm3day > 0 Then
+                        val_max = q_gas_sm3day * 2
+                    Else
+                        val_max = 10000
+                    End If
+                Case Else
+                    ' solve_equation_bisection without initialasing func crashes excel
+                    MF_calibr_pipeline = "not implemented"
+                    Exit Function
+            End Select
+
+            'Dim new_array(1) As Object
+            prm.y_tolerance = UnfClassLibrary.const_pressure_tolerance
+            If UnfClassLibrary.solve_equation_bisection(Func, val_min, val_max, CoeffA, prm) Then
+
+                MF_calibr_pipeline = {prm.x_solution, cal_type_string, prm.y_solution, prm.iterations, prm.msg}
+                'new_array(0) = (prm.x_solution, cal_type_string, prm.y_solution, prm.iterations, prm.msg)
+
+            Else
+                MF_calibr_pipeline = {"no solution", cal_type_string, prm.y_solution, prm.iterations, prm.msg}
+                'new_array(0) = ("no solution", cal_type_string, prm.y_solution, prm.iterations, prm.msg)
+            End If
+
+            'new_array(1) = ("solution", "cal_type", "y_solution", "iterations", "description")
+            'MF_calibr_pipeline = new_array
+            'MF_calibr_pipeline = Join(MF_calibr_pipeline)
+            Exit Function
+        Catch ex As Exception
+            MF_calibr_pipeline = {-1, "error"}
+            Dim errmsg As String
+            errmsg = "Error:MF_calibr_pipeline:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    '  подбор параметров потока через трубу при известном
+    '  перепаде давления с использованием многофазных корреляций
+    ' (лучше не использовать - используйте MF_calibr_pipeline)
+    Public Function MF_calibr_pipe(
+        ByVal p_calc_from_atma As Double,
+        ByVal p_calc_to_atma As Double,
+        ByVal t_calc_from_C As Double,
+        ByVal t_calc_to_C As Double,
+        ByVal length_m As Double,
+        ByVal theta_deg As Double,
+        ByVal d_mm As Double,
+        ByVal qliq_sm3day As Double,
+        ByVal fw_perc As Double,
+        Optional ByVal q_gas_sm3day As Double = 0,
+        Optional ByVal str_PVT As String = "",
+        Optional ByVal calc_flow_direction As Integer = 11,
+        Optional ByVal hydr_corr As UnfClassLibrary.H_CORRELATION = 0,
+        Optional ByVal c_calibr() As Double = Nothing,
+        Optional ByVal roughness_m As Double = 0.0001,
+        Optional ByVal calibr_type As Integer = 0)
+        'p_calc_from_atma - давление с которого начинается расчет, атм
+        '                   граничное значение для проведения расчета
+        ' t_calc_from_C   - температура в точке где задано давление, С
+        ' t_calc_to_C     - температура на другом конце трубы
+        '                 по умолчанию температура вдоль трубы постоянна
+        '                   если задано то меняется линейно по трубе
+        ' length_m        - Длина трубы, измеренная, м
+        ' theta_deg       - угол направления потока к горизонтали
+        ' d_mm            - внутренний диаметр трубы
+        ' qliq_sm3day     - дебит жидкости в поверхностных условиях
+        '              если qliq_sm3day =0 и q_gas_sm3day > 0
+        '              тогда считается барботаж газа через жидкость
+        ' fw_perc         - обводненность
+        ' q_gas_sm3day    - свободный газ. дополнительный к PVT потоку.
+        ' str_PVT         - закодированная строка с параметрами PVT.
+        '                   если задана - перекрывает другие значения
+        '        если задан флаг gas_only = 1 то жидкость не учитывается
+        ' calc_flow_direction - направление расчета и потока
+        '                   относительно координат
+        '                   если = 11 расчет и поток по координате
+        '                   если = 10 расчет по, поток против координат
+        '                   если = 00 расчет и поток против координате
+        '                   если = 01 расчет против, поток по координате
+        ' hydr_corr       - гидравлическая корреляция, H_CORRELATION
+        '                    BeggsBrill = 0
+        '                    Ansari = 1
+        '                    Unified = 2
+        '                    Gray = 3
+        '                    HagedornBrown = 4
+        '                    SakharovMokhov = 5
+        ' c_calibr        - поправка на гравитационную составляющую
+        '           перепада давления, если дать ссылку на две ячейки,
+        '           то вторая будет поправка на трение
+        ' roughness_m     - шероховатость трубы
+        ' out_curves      - флаг вывод значений между концами трубы
+        '                   0 минимум, 1 основные, 2 все значения.
+        '                   вывод может замедлять расчет (не сильно)
+        ' out_curves_num_points - количество точек для вывода значений
+        '                   между концами трубы.
+        ' результат       - число - давление на другом конце трубы atma.
+        '                  или массив - первая строка значения
+        '                               вторая строка - подписи
+        'description_end
+
+        If c_calibr Is Nothing Then
+            c_calibr = {1}
+        End If
+        Dim pipe As UnfClassLibrary.CPipe
+        pipe = New UnfClassLibrary.CPipe
+        pipe.Class_Initialize()
+        Dim prm As UnfClassLibrary.CSolveParam
+        prm = New UnfClassLibrary.CSolveParam
+        prm.Class_Initialize()
+        Dim CoeffA(2)
+        Dim Func As String
+        Dim cal_type_string As String
+        Dim val_min As Double, val_max As Double
+        'Dim out, out_desc
+
+        Try
+            'Dim new_array(1) As Object
+            ' check pipe length
+            length_m = Math.Abs(length_m)                ' length must be positive
+            If length_m = 0 Then
+                MF_calibr_pipe = {p_calc_from_atma, t_calc_from_C}
+                'new_array(0) = (p_calc_from_atma, t_calc_from_C)
+                Exit Function
+            End If
+            ' initialize pipe
+            pipe = UnfClassLibrary.new_pipe_with_stream(qliq_sm3day, fw_perc, length_m, calc_flow_direction,
+                                        str_PVT, theta_deg, d_mm, hydr_corr,
+                                        t_calc_from_C, t_calc_to_C,
+                                        c_calibr,
+                                        roughness_m, q_gas_sm3day)
+
+            ' prepare solution function
+            CoeffA(0) = pipe
+            CoeffA(1) = p_calc_from_atma
+            CoeffA(2) = p_calc_to_atma
+
+            Select Case calibr_type
+                Case 0
+                    Func = "calc_pipe_dp_error_calibr_grav_atm"
+                    cal_type_string = "calibr_grav"
+                    val_min = 0.5
+                    val_max = 1.5
+                Case 1
+                    Func = "calc_pipe_dp_error_calibr_fric_atm"
+                    cal_type_string = "calibr_fric"
+                    val_min = 0.5
+                    val_max = 1.5
+                Case 2
+                    Func = "calc_pipe_dp_error_rp_atm"
+                    cal_type_string = "rp"
+                    val_min = 20 'pipe.fluid.rp_m3m3 * 0.5
+                    val_max = pipe.fluid.Rp_m3m3 * 2
+            ' Расширить диапазон поиска по газовому фактору может быть опасно
+            ' так как возможна неоднозначность решения
+            ' а текущий метод поиска работает только если есть одно решение
+                Case 3
+                    Func = "calc_pipe_dp_error_fw_atm"
+                    cal_type_string = "fw"
+                    val_min = 0
+                    val_max = 1
+                    If val_max > 1 Then val_max = 1
+                Case 4
+                    Func = "calc_pipe_dp_error_qliq_atm"
+                    cal_type_string = "qliq"
+                    val_min = 1
+                    val_max = pipe.fluid.qliq_sm3day * 1.5
+                Case 5
+                    Func = "calc_pipe_dp_error_qgas_atm"
+                    cal_type_string = "qgas"
+                    val_min = 0
+                    If q_gas_sm3day > 0 Then
+                        val_max = q_gas_sm3day * 2
+                    Else
+                        val_max = 10000
+                    End If
+                Case Else
+                    ' solve_equation_bisection without initialasing func crashes excel
+                    MF_calibr_pipe = "not implemented"
+                    Exit Function
+            End Select
+
+            prm.y_tolerance = UnfClassLibrary.const_pressure_tolerance
+            If UnfClassLibrary.solve_equation_bisection(Func, val_min, val_max, CoeffA, prm) Then
+
+                MF_calibr_pipe = {prm.x_solution, cal_type_string, prm.y_solution, prm.iterations, prm.msg}
+                'new_array(0) = (prm.x_solution, cal_type_string, prm.y_solution, prm.iterations, prm.msg)
+            Else
+                MF_calibr_pipe = {"no solution", cal_type_string, prm.y_solution, prm.iterations, prm.msg}
+                'new_array(0) = ("no solution", cal_type_string, prm.y_solution, prm.iterations, prm.msg)
+            End If
+
+            'new_array(1) = ("solution", "cal_type", "y_solution", "iterations", "description")
+            'MF_calibr_pipe = new_array
+            'MF_calibr_pipe = Join(MF_calibr_pipe)
+
+            Exit Function
+        Catch ex As Exception
+            MF_calibr_pipe = {-1, "error"}
+            Dim errmsg As String
+            errmsg = "Error:MF_calibr_pipe:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+
+
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    '  расчет распределения давления и температуры в трубопроводе
+    '  с использованием многофазных корреляций
+    Public Function MF_p_pipeline_atma(
+                 ByVal p_calc_from_atma As Double,
+                 ByVal t_calc_from_C As Double,
+                 ByVal t_val_C(,) As Double,
+                 ByVal h_list_m(,) As Double,
+                 ByVal diam_list_mm(,) As Double,
+                 ByVal qliq_sm3day As Double,
+                 ByVal fw_perc As Double,
+        Optional ByVal q_gas_sm3day As Double = 0,
+        Optional ByVal str_PVT As String = "",
+        Optional ByVal calc_flow_direction As Integer = 11,
+        Optional ByVal hydr_corr As UnfClassLibrary.H_CORRELATION = 0,
+        Optional ByVal temp_method As UnfClassLibrary.TEMP_CALC_METHOD = UnfClassLibrary.TEMP_CALC_METHOD.StartEndTemp,
+        Optional ByVal c_calibr() As Double = Nothing,
+        Optional ByVal roughness_m As Double = 0.0001,
+        Optional ByVal out_curves As Integer = 1,
+        Optional ByVal out_curves_num_points As Integer = 20,
+        Optional ByVal num_value As Integer = 0,
+        Optional ByVal znlf As Boolean = False)
+        ' p_calc_from_atma  - давление с которого начинается расчет, атм
+        '           граничное значение для проведения расчета
+        ' t_calc_from_C - температура в точке где задано давление расчета
+        ' t_val_C   - температура вдоль трубопровода
+        '           если число то температура на другом конце трубы
+        '           если range или таблица [0..N,0..1] то температура
+        '           окружающей среды по вертикальной глубине, С
+        ' h_list_m  - траектория трубопровода, если число то измеренная
+        '           длина, range или таблица [0..N,0..1] то траектория
+        ' diam_list_mm  - внутрнний диаметр трубы, если число то задается
+        '           постоянный диаметр, если range или таблица [0..N,0..1]
+        '           то задается зависимость диаметра от измеренной длины
+        ' qliq_sm3day - дебит жидкости в поверхностных условиях, нм3/сут
+        '           если qliq_sm3day =0 и q_gas_sm3day > 0
+        '           тогда считается барботаж газа через жидкость
+        ' fw_perc   - обводненность объемная в стандартных условиях
+        ' q_gas_sm3day  - свободный газ нм3/сут. дополнительный к PVT потоку.
+        '           учитывается для барботажа или режима потока газа
+        '           в других случаях добавляется к общему потоку меняя rp
+        ' str_PVT   - закодированная строка с параметрами PVT.
+        '           если задана - перекрывает другие значения
+        '           если задан флаг gas_only = 1 то жидкость не учитывается
+        ' calc_flow_direction - направление расчета и потока относительно
+        '           координат.  11 расчет и поток по координате
+        '                       10 расчет по коордиате, поток против
+        '                       00 расчет и поток против координате
+        '                       01 расчет против координат, поток по
+        ' hydr_corr - гидравлическая корреляция, H_CORRELATION
+        '           BeggsBrill = 0,
+        '           Ansari = 1,
+        '           Unified = 2,
+        '           Gray = 3,
+        '           HagedornBrown = 4,
+        '           SakharovMokhov = 5
+        ' temp_method  - метод расчета температуры
+        '           0 - линейное распределение по длине
+        '           1 - температура равна температуре окружающей среды
+        '           2 - расчет температуры с учетом эмиссии в окр. среду
+        ' c_calibr  - поправка на гравитационную составляющую
+        '           перепада давления, если дать ссылку на две ячейки,
+        '           то вторая будет поправка на трение.
+        ' roughness_m - шероховатость трубы
+        ' out_curves - флаг вывод значений между концами трубы
+        '           1 основные, 2 все значения.
+        '           вывод может замедлять расчет (не сильно)
+        ' out_curves_num_points - количество точек для вывода значений
+        '           между концами трубы.
+        ' num_value       - значение которое будет выводиться первым
+        ' znlf    - флаг для расчета вертикального барботажа (дин уровень)
+        ' результат - число - давление на другом конце трубы atma.
+        '           и распределение параметров по трубе
+        'description_end
+
+        If c_calibr Is Nothing Then
+            c_calibr = {1}
+        End If
+        Dim pipe As UnfClassLibrary.CPipe
+        pipe = New UnfClassLibrary.CPipe
+        pipe.Class_Initialize()
+        Dim res, res1
+
+        Try
+            pipe = UnfClassLibrary.new_pipeline_with_stream(qliq_sm3day,
+                                            fw_perc,
+                                            h_list_m,
+                                            t_calc_from_C,
+                                            calc_flow_direction,
+                                            str_PVT,
+                                            diam_list_mm,
+                                            hydr_corr,
+                                            t_val_C,
+                                            temp_method,
+                                            c_calibr,
+                                            roughness_m,
+                                            q_gas_sm3day,
+                                            znlf)
+
+            ' calc pressure distribution
+            res1 = UnfClassLibrary.PT_to_array(pipe.calc_dPipe(p_calc_from_atma, t_calc_from_C, UnfClassLibrary.CALC_RESULTS.allCurves))
+            If out_curves = 2 Then
+                res = pipe.array_out(out_curves_num_points, all_curves_out:=True)
+            Else
+                res = pipe.array_out(out_curves_num_points)
+            End If
+            res(0, 0) = res1(0)
+
+            res(0, 0) = res(0, num_value)
+            res(1, 0) = res(1, num_value)
+            MF_p_pipeline_atma = res
+
+            Exit Function
+        Catch ex As Exception
+            MF_p_pipeline_atma = {-1, "error"}
+            Dim errmsg As String
+            errmsg = "Error:MF_p_pipeline_atma:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
+
+    'description_to_manual      - для автогенерации описания - помещает заголовок функции и окружающие комментарии в мануал (со след строки)
+    ' расчет распределения давления и температуры в трубе
+    ' (лучше не использовать - используйте MF_p_pipeline_atma)
+    Public Function MF_p_pipe_atma(
+        ByVal p_calc_from_atma As Double,
+        ByVal t_calc_from_C As Double,
+        ByVal t_calc_to_C As Double,
+        ByVal length_m As Double,
+        ByVal theta_deg As Double,
+        ByVal d_mm As Double,
+        ByVal qliq_sm3day As Double,
+        ByVal fw_perc As Double,
+        Optional ByVal q_gas_sm3day As Double = 0,
+        Optional ByVal str_PVT As String = "",
+        Optional ByVal calc_flow_direction As Integer = 11,
+        Optional ByVal hydr_corr As UnfClassLibrary.H_CORRELATION = 0,
+        Optional ByVal c_calibr() As Double = Nothing,
+        Optional ByVal roughness_m As Double = 0.0001,
+        Optional ByVal out_curves As Integer = 1,
+        Optional ByVal out_curves_num_points As Integer = 20,
+        Optional ByVal num_value As Integer = 0)
+        'p_calc_from_atma - давление с которого начинается расчет, атм
+        '                   граничное значение для проведения расчета
+        ' t_calc_from_C   - температура в точке где задано давление, С
+        ' t_calc_to_C     - температура на другом конце трубы
+        '                 по умолчанию температура вдоль трубы постоянна
+        '                   если задано то меняется линейно по трубе
+        ' length_m        - Длина трубы, измеренная, м
+        ' theta_deg       - угол направления потока к горизонтали
+        ' d_mm            - внутренний диаметр трубы
+        ' qliq_sm3day     - дебит жидкости в поверхностных условиях
+        '              если qliq_sm3day =0 и q_gas_sm3day > 0
+        '              тогда считается барботаж газа через жидкость
+        ' fw_perc         - обводненность
+        ' q_gas_sm3day    - свободный газ. дополнительный к PVT потоку.
+        ' str_PVT         - закодированная строка с параметрами PVT.
+        '                   если задана - перекрывает другие значения
+        '        если задан флаг gas_only = 1 то жидкость не учитывается
+        ' calc_flow_direction - направление расчета и потока
+        '                   относительно координат
+        '                   если = 11 расчет и поток по координате
+        '                   если = 10 расчет по, поток против координат
+        '                   если = 00 расчет и поток против координате
+        '                   если = 01 расчет против, поток по координате
+        ' hydr_corr       - гидравлическая корреляция, H_CORRELATION
+        '                    BeggsBrill = 0
+        '                    Ansari = 1
+        '                    Unified = 2
+        '                    Gray = 3
+        '                    HagedornBrown = 4
+        '                    SakharovMokhov = 5
+        ' c_calibr        - поправка на гравитационную составляющую
+        '           перепада давления, если дать ссылку на две ячейки,
+        '           то вторая будет поправка на трение
+        ' roughness_m     - шероховатость трубы
+        ' out_curves      - флаг вывод значений между концами трубы
+        '                   0 минимум, 1 основные, 2 все значения.
+        '                   вывод может замедлять расчет (не сильно)
+        ' out_curves_num_points - количество точек для вывода значений
+        '                   между концами трубы.
+        ' num_value       - значение которое будет выводиться первым
+        ' результат       - число - давление на другом конце трубы atma.
+        '                  или массив - первая строка значения
+        '                               вторая строка - подписи
+        'description_end
+
+        If c_calibr Is Nothing Then
+            c_calibr = {1}
+        End If
+        Dim pipe As UnfClassLibrary.CPipe
+        pipe = New UnfClassLibrary.CPipe
+        pipe.Class_Initialize()
+        Dim PVT As UnfClassLibrary.CPVT
+        PVT = New UnfClassLibrary.CPVT
+        PVT.Class_Initialize()
+        Dim PTcalc As UnfClassLibrary.PTtype
+        Dim PTin As UnfClassLibrary.PTtype
+        Dim PTout As UnfClassLibrary.PTtype
+        'Dim TM As UnfClassLibrary.TEMP_CALC_METHOD
+        Dim out, out_desc As Object
+        Dim out_curves_type As UnfClassLibrary.CALC_RESULTS
+        Dim res As Object
+        Dim arr As Object
+
+        Try
+            ' check pipe length
+            length_m = Math.Abs(length_m)                ' length must be positive
+            If length_m = 0 Then
+                MF_p_pipe_atma = {p_calc_from_atma, t_calc_from_C}
+                Exit Function
+            End If
+            ' initialize pipe
+            pipe = UnfClassLibrary.new_pipe_with_stream(qliq_sm3day, fw_perc, length_m, calc_flow_direction,
+                                        str_PVT, theta_deg, d_mm, hydr_corr,
+                                        t_calc_from_C, t_calc_to_C,
+                                        c_calibr,
+                                        roughness_m, q_gas_sm3day)
+            ' prep output
+            If out_curves Then
+                out_curves_type = UnfClassLibrary.CALC_RESULTS.allCurves
+            Else
+                out_curves_type = UnfClassLibrary.CALC_RESULTS.nocurves
+            End If
+            ' calc pressure distribution
+            PTcalc = pipe.calc_dPipe(p_calc_from_atma, , out_curves_type)  ' ( -allcurves * out_curves ) can be used for simpcity but not
+
+            ' prep results for output
+            If calc_flow_direction \ 10 = 1 Then
+                PTout = PTcalc
+                PTin.p_atma = p_calc_from_atma
+                PTin.t_C = t_calc_from_C
+            Else
+                PTin = PTcalc
+                PTout.p_atma = p_calc_from_atma
+                PTout.t_C = t_calc_from_C
+            End If
+
+            ' out results based on out_curves value
+            If out_curves = 1 Then
+                res = pipe.array_out(out_curves_num_points)
+                res(0, 0) = PTcalc.p_atma
+                res(0, 1) = PTcalc.t_C
+                arr = res
+            ElseIf out_curves = 2 Then
+                res = pipe.array_out(out_curves_num_points, all_curves_out:=True)
+                res(0, 0) = PTcalc.p_atma
+                res(0, 1) = PTcalc.t_C
+                arr = res
+            Else
+                out = {PTcalc.p_atma, PTcalc.t_C, PTin.p_atma, PTin.t_C, PTout.p_atma, PTout.t_C, pipe.c_calibr_grav, pipe.c_calibr_fric}
+
+                out_desc = {"p_calc_atma", "t_calc_C", "p_in_atma", "t_in_C", "p_out_atma", "t_out_C", "c_calibr_grav", "c_calibr_fric"}
+
+                arr = Join(out, out_desc)
+
+            End If
+            arr(0, 0) = arr(0, num_value)
+            arr(1, 0) = arr(1, num_value)
+            MF_p_pipe_atma = arr
+
+            Exit Function
+        Catch ex As Exception
+            MF_p_pipe_atma = {-1, "error"}
+            Dim errmsg As String
+            errmsg = "Error:MF_p_pipe_atma:" & Err.Description
+            Throw New ApplicationException(errmsg)
+        End Try
+
+    End Function
+
 End Module
